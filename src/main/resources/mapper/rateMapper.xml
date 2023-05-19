@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.server.mapper.RateExMapper">
+    <resultMap id="rateMap" type="com.example.server.model.Rate">
+        <id property="rateId" column="rate_id"/>
+        <id property="curLocal" column="cur_local"/>
+        <id property="curLocalMoney" column="cur_local_money"/>
+        <id property="curField" column="cur_field"/>
+        <id property="curFieldMoney" column="cur_field_money"/>
+    </resultMap>
+    <select id="selectRate" resultMap="rateMap">
+        select * from project.exchange_rate
+        where date = #{date}
+    </select>
+    <insert id="insertRate" parameterType="com.example.server.model.Rate">
+        insert into project.exchange_rate (cur_local,cur_local_money,cur_field,cur_field_money,date,create_time)
+        values (#{curLocal},#{curLocalMoney},#{curField},#{curFieldMoney},#{date},#{createTime})
+    </insert>
+    <delete id="deleteRate" parameterType="string">
+        delete from project.exchange_rate
+        where #{date}
+    </delete>
+
+</mapper>
