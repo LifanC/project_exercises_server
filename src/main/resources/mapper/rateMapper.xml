@@ -7,18 +7,73 @@
         <id property="curLocalMoney" column="cur_local_money"/>
         <id property="curField" column="cur_field"/>
         <id property="curFieldMoney" column="cur_field_money"/>
+        <id property="date" column="date"/>
+        <id property="curNameJson" column="cur_name_json"/>
     </resultMap>
     <select id="selectRate" resultMap="rateMap">
-        select * from project.exchange_rate
-        where date = #{date}
+        select * from project.exchange_rate rate
+        where rate.date = #{date}
     </select>
     <insert id="insertRate" parameterType="com.example.server.model.Rate">
-        insert into project.exchange_rate (cur_local,cur_local_money,cur_field,cur_field_money,date,create_time)
-        values (#{curLocal},#{curLocalMoney},#{curField},#{curFieldMoney},#{date},#{createTime})
+        insert into project.exchange_rate (
+            cur_local,
+            cur_local_money,
+            cur_field,
+            cur_field_money,
+            date,
+            create_time,
+            cur_name_json
+            )
+        values (
+                #{curLocal},
+                #{curLocalMoney},
+                #{curField},
+                #{curFieldMoney},
+                #{date},
+                #{createTime},
+                #{curNameJson}
+                )
     </insert>
     <delete id="deleteRate" parameterType="string">
         delete from project.exchange_rate
         where #{date}
     </delete>
+
+    <resultMap id="jsonMap" type="com.example.server.model.CurrencyJson">
+        <id property="currencyId" column="currency_id"/>
+        <id property="currency" column="currency"/>
+        <id property="currencyName" column="currency_name"/>
+        <id property="currencyNation" column="currency_nation"/>
+    </resultMap>
+    <select id="selectCurrency" resultMap="jsonMap">
+        select * from project.currency_json
+        where currency = #{currency}
+    </select>
+
+    <select id="getAll" resultMap="rateMap">
+        select
+            *
+        from project.exchange_rate rate
+        order by rate.date desc
+    </select>
+
+    <select id="getOnly" resultMap="rateMap">
+        select
+            *
+        from project.exchange_rate
+        where  cur_field = #{curField}
+    </select>
+
+    <select id="getNation" resultMap="jsonMap">
+        select * from project.currency_json
+    </select>
+
+    <select id="getNationName" resultMap="jsonMap">
+        select * from project.currency_json
+        where currency = #{curField}
+    </select>
+
+
+
 
 </mapper>

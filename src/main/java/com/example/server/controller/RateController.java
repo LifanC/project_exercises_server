@@ -20,4 +20,25 @@ public class RateController {
         return rateService.saveRate(rate);
     }
 
+    @GetMapping("/getAll")
+    public List<Rate> getAll(){
+        return rateService.getAll();
+    }
+
+    @GetMapping("/getOnly")
+    public List<Rate> getOnly(String curField){
+        return rateService.getOnly(curField);
+    }
+
+    @GetMapping("/getNation")
+    public List<CurrencyJson> getNation(){
+        return rateService.getNation();
+    }
+
+    @GetMapping("/getNationName")
+    public List<CurrencyJson> getNationName(String curField){
+        return rateService.getNationName(curField);
+    }
+
+
 }

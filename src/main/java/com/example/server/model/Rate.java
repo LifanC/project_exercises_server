@@ -2,7 +2,6 @@ package com.example.server.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -16,4 +15,6 @@ public class Rate {
     private String curField;
     private String curFieldMoney;
     private String createTime;
+    private Object curNameJson;
+    private String currencyNation;
 }
