@@ -60,8 +60,9 @@
     <select id="getOnly" resultMap="rateMap">
         select
             *
-        from project.exchange_rate
-        where  cur_field = #{curField}
+        from project.exchange_rate rate
+        where  rate.cur_field = #{curField}
+        order by rate.date desc
     </select>
 
     <select id="getNation" resultMap="jsonMap">

@@ -3,9 +3,10 @@ package com.example.server.controller;
 import com.example.server.model.*;
 import com.example.server.service.RateService;
 import jakarta.annotation.Resource;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 
 @RestController
@@ -16,6 +17,7 @@ public class RateController {
     private RateService rateService;
 
     @PostMapping("/getRate")
+    @Transactional
     public List<String> getRate(@RequestBody Rate rate) {
         return rateService.saveRate(rate);
     }
@@ -39,6 +41,5 @@ public class RateController {
     public List<CurrencyJson> getNationName(String curField){
         return rateService.getNationName(curField);
     }
-
 
 }
