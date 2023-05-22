@@ -20,4 +20,7 @@ public interface RateExMapper {
     List<CurrencyJson> getNation();
     List<CurrencyJson> getNationName(String curField);
     List<NationNameAll> getNationNameAll();
+    int fromSubmit(UserMoney userMoney);
+    List<UserMoney> getUserMoneyAll(String userName);
+    int setId(UserMoney userMoney);
 }
