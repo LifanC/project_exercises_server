@@ -50,19 +50,22 @@
         where currency = #{currency}
     </select>
 
-    <select id="getAll" resultMap="rateMap">
-        select
-            *
-        from project.exchange_rate rate
-        order by rate.date desc
-    </select>
-
     <select id="getOnly" resultMap="rateMap">
         select
             *
         from project.exchange_rate rate
         where  rate.cur_field = #{curField}
         order by rate.date desc
+    </select>
+
+    <resultMap id="nationOnly" type="com.example.server.model.NationNameAll">
+        <id property="currency" column="currency"/>
+        <id property="currencyName" column="currency_name"/>
+        <id property="currencyNation" column="currency_nation"/>
+    </resultMap>
+    <select id="getNationOnly" resultMap="nationOnly">
+        select * from project.currency_json json
+        where json.currency = #{curField}
     </select>
 
     <select id="getNation" resultMap="jsonMap">
@@ -72,6 +75,16 @@
     <select id="getNationName" resultMap="jsonMap">
         select * from project.currency_json
         where currency = #{curField}
+    </select>
+
+    <resultMap id="jsonNationNameAllMap" type="com.example.server.model.NationNameAll">
+        <id property="currency" column="currency"/>
+        <id property="currencyName" column="currency_name"/>
+        <id property="currencyNation" column="currency_nation"/>
+    </resultMap>
+
+    <select id="getNationNameAll" resultMap="jsonNationNameAllMap">
+        select * from project.currency_json
     </select>
 
 

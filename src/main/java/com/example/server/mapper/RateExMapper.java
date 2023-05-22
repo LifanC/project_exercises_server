@@ -1,10 +1,9 @@
 package com.example.server.mapper;
 
-import com.example.server.model.CurrencyJson;
-import com.example.server.model.Rate;
+import com.example.server.model.*;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
+import java.util.*;
 
 @Mapper
 public interface RateExMapper {
@@ -16,8 +15,9 @@ public interface RateExMapper {
 
     List<CurrencyJson> selectCurrency(String currency);
 
-    List<Rate> getAll();
     List<Rate> getOnly(String curField);
+    List<NationNameAll> getNationOnly(String curField);
     List<CurrencyJson> getNation();
     List<CurrencyJson> getNationName(String curField);
+    List<NationNameAll> getNationNameAll();
 }
