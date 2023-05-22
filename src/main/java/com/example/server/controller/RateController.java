@@ -47,5 +47,15 @@ public class RateController{
         return rateService.getNationNameAll();
     }
 
+    @PostMapping("/fromSubmit")
+    public List<UserMoney> fromSubmit(@RequestBody UserMoney userMoney){
+        return rateService.fromSubmit(userMoney);
+    }
+
+    @GetMapping("/getUserMoney")
+    public List<UserMoney> getUserMoney(UserMoney userMoney){
+        return rateService.getUserMoney(userMoney);
+    }
+
 
 }

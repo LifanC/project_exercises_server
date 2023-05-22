@@ -5,6 +5,7 @@ import com.example.server.model.CurrencyJson;
 import com.example.server.model.NationNameAll;
 import com.example.server.model.Rate;
 
+import com.example.server.model.UserMoney;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,11 +24,22 @@ public class RateServiceImpl implements RateService{
     @Resource
     private RateExMapper rateExMapper;
 
-    @Override
-    public void saveRate(Rate rate) {
+    public String timeFormatter(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime date = LocalDateTime.now();
         String formattedDate = date.format(formatter);
+        return formattedDate;
+    }
+
+    public String formatteryyyyMMdd(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDateTime date = LocalDateTime.now();
+        String formattedDate = date.format(formatter);
+        return formattedDate;
+    }
+
+    @Override
+    public void saveRate(Rate rate) {
         Map<?, ?> map = (Map<?, ?>) rate.getRates();
 
         List<Rate> data = rateExMapper.selectRate(rate.getDate());
@@ -37,7 +49,7 @@ public class RateServiceImpl implements RateService{
                 rate.setCurLocalMoney("1");
                 rate.setCurField((String) k);
                 rate.setCurFieldMoney(v.toString());
-                rate.setCreateTime(formattedDate);
+                rate.setCreateTime(timeFormatter());
                 List<CurrencyJson> dataJson = rateExMapper.selectCurrency((String) k);
                 dataJson.forEach(e -> {
                     if(e.getCurrency().equals((String)k)){
@@ -73,9 +85,28 @@ public class RateServiceImpl implements RateService{
 
     @Override
     public List<NationNameAll> getNationNameAll() {
-        List<NationNameAll> data = rateExMapper.getNationNameAll();
+        return rateExMapper.getNationNameAll();
+    }
 
-        return data;
+    @Override
+    public List<UserMoney> fromSubmit(UserMoney userMoney) {
+        userMoney.setCreateTime(timeFormatter());
+        BigDecimal v = new BigDecimal(String.valueOf(userMoney.getExMoney()));
+        BigDecimal x = new BigDecimal(userMoney.getCurFieldMoney());
+        userMoney.setShowMoney(v.multiply(x));
+        rateExMapper.fromSubmit(userMoney);
+        List<UserMoney> data = rateExMapper.getUserMoneyAll(userMoney.getUserName());
+        data.forEach(e->{
+            userMoney.setUserNameId(formatteryyyyMMdd()+e.getUserId());
+            rateExMapper.setId(userMoney);
+        });
+        List<UserMoney> showData = rateExMapper.getUserMoneyAll(userMoney.getUserName());
+        return showData;
+    }
+
+    @Override
+    public List<UserMoney> getUserMoney(UserMoney userMoney) {
+        return rateExMapper.getUserMoneyAll(userMoney.getUserName());
     }
 
 

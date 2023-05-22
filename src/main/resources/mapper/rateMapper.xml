@@ -87,6 +87,58 @@
         select * from project.currency_json
     </select>
 
+    <insert id="fromSubmit" parameterType="com.example.server.model.UserMoney">
+        insert into project.user_money (
+            user_name_id,
+            user_name,
+            nation,
+            rate_name,
+            ex_money,
+            cur_field_money,
+            show_money,
+            create_time
+        )
+        values (
+                   #{userNameId},
+                   #{userName},
+                   #{nation},
+                   #{rateName},
+                   #{exMoney},
+                   #{curFieldMoney},
+                   #{showMoney},
+                   #{createTime}
+               )
+    </insert>
+
+    <resultMap id="getId" type="com.example.server.model.UserMoney">
+        <id property="userId" column="user_id"/>
+        <id property="userNameId" column="user_name_id"/>
+        <id property="userName" column="user_name"/>
+        <id property="nation" column="nation"/>
+        <id property="rateName" column="rate_name"/>
+        <id property="exMoney" column="ex_money"/>
+        <id property="curFieldMoney" column="cur_field_money"/>
+        <id property="showMoney" column="show_money"/>
+    </resultMap>
+    <select id="getUserMoneyAll" resultMap="getId">
+        select
+            user_id,
+            user_name_id,
+            user_name,
+            nation,
+            rate_name,
+            ex_money,
+            cur_field_money,
+            show_money
+        from project.user_money
+        where user_name like concat('%', #{userName} ,'%')
+    </select>
+
+    <update id="setId" parameterType="com.example.server.model.UserMoney">
+        update project.user_money set user_name_id = #{userNameId} where user_name = #{userName}
+    </update>
+
+
 
 
 

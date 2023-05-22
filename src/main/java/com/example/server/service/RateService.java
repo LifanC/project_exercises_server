@@ -1,8 +1,6 @@
 package com.example.server.service;
 
-import com.example.server.model.CurrencyJson;
-import com.example.server.model.NationNameAll;
-import com.example.server.model.Rate;
+import com.example.server.model.*;
 
 import java.util.List;
 
@@ -13,5 +11,7 @@ public interface RateService{
     List<CurrencyJson> getNation ();
     List<CurrencyJson> getNationName (String curField);
     List<NationNameAll> getNationNameAll ();
+    List<UserMoney> fromSubmit(UserMoney userMoney);
+    List<UserMoney> getUserMoney(UserMoney userMoney);
 
 }
