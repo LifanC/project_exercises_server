@@ -47,6 +47,9 @@ public class RateController{
         return rateService.getNationNameAll();
     }
 
+    /**
+     * 新增
+     * */
     @PostMapping("/fromSubmit")
     public List<UserMoney> fromSubmit(@RequestBody UserMoney userMoney){
         return rateService.fromSubmit(userMoney);
@@ -56,6 +59,32 @@ public class RateController{
     public List<UserMoney> getUserMoney(UserMoney userMoney){
         return rateService.getUserMoney(userMoney);
     }
+
+    /**
+     * 刪除
+     * */
+    @DeleteMapping("/delId/{userId}/{userName}")
+    public List<UserMoney> delId(
+            @PathVariable("userId") Long userId,
+            @PathVariable("userName") String userName
+    ){
+        return rateService.delId(userId,userName);
+    }
+
+    /**
+     * 修改
+     * */
+    @PutMapping("/putAddMoney/{setMoney}/{curFieldMoney}/{userId}/{userName}")
+    public List<UserMoney> putAddMoney(
+            @PathVariable String setMoney,
+            @PathVariable String curFieldMoney,
+            @PathVariable Long userId,
+            @PathVariable String userName
+    ){
+        return rateService.putAddMoney(setMoney,curFieldMoney,userId,userName);
+    }
+
+
 
 
 }
