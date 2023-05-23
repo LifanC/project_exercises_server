@@ -73,15 +73,17 @@ public class RateController{
 
     /**
      * 修改
+     * 存錢
      * */
-    @PutMapping("/putAddMoney/{setMoney}/{curFieldMoney}/{userId}/{userName}")
+    @PutMapping("/putAddMoney/{setMoney}/{curFieldMoney}/{userId}/{userName}/{depositOrWithdrawMoney}")
     public List<UserMoney> putAddMoney(
             @PathVariable String setMoney,
             @PathVariable String curFieldMoney,
             @PathVariable Long userId,
-            @PathVariable String userName
+            @PathVariable String userName,
+            @PathVariable String depositOrWithdrawMoney
     ){
-        return rateService.putAddMoney(setMoney,curFieldMoney,userId,userName);
+        return rateService.putAddMoney(setMoney,curFieldMoney,userId,userName,depositOrWithdrawMoney);
     }
 
 
