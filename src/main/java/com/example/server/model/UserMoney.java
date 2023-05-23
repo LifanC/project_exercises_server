@@ -14,4 +14,5 @@ public class UserMoney extends CreateTime{
     private BigDecimal exMoney;
     private String curFieldMoney;
     private BigDecimal showMoney;
+    private Object curNameJson;
 }

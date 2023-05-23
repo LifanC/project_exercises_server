@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -107,6 +106,34 @@ public class RateServiceImpl implements RateService{
     @Override
     public List<UserMoney> getUserMoney(UserMoney userMoney) {
         return rateExMapper.getUserMoneyAll(userMoney.getUserName());
+    }
+
+    @Override
+    public List<UserMoney> delId(Long userId,String userName) {
+        rateExMapper.delId(userId);
+        return rateExMapper.getUserMoneyAll(userName);
+    }
+
+    @Override
+    public List<UserMoney> putAddMoney(String setMoney, String curFieldMoney, Long userId,String userName) {
+        List<UserMoney> data = rateExMapper.getUserMoneyId(userId);
+        data.forEach(z->{
+            BigDecimal aNew = new BigDecimal(setMoney);
+            BigDecimal bOld = new BigDecimal(String.valueOf(z.getExMoney()));
+            //錢(新)+錢(舊)
+            BigDecimal aNewAddbOld = aNew.add(bOld);
+            BigDecimal c = new BigDecimal(curFieldMoney);
+            BigDecimal d = aNew.multiply(c);
+            BigDecimal e = new BigDecimal(String.valueOf(z.getShowMoney()));
+            //錢(*匯率)+錢(原本匯率)
+            BigDecimal dAdde = d.add(e);
+            Map map = new HashMap<>();
+            map.put("exMoney",aNewAddbOld);
+            map.put("showMoney",dAdde);
+            map.put("userId",userId);
+            rateExMapper.setUserMoneyId(map);
+        });
+        return rateExMapper.getUserMoneyAll(userName);
     }
 
 

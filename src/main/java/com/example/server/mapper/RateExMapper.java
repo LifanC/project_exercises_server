@@ -3,6 +3,7 @@ package com.example.server.mapper;
 import com.example.server.model.*;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Mapper
@@ -10,8 +11,6 @@ public interface RateExMapper {
 
     List<Rate> selectRate(String rateTime);
     int insertRate(Rate rate);
-
-    int deleteRate(String rateTime);
 
     List<CurrencyJson> selectCurrency(String currency);
 
@@ -23,4 +22,8 @@ public interface RateExMapper {
     int fromSubmit(UserMoney userMoney);
     List<UserMoney> getUserMoneyAll(String userName);
     int setId(UserMoney userMoney);
+    int delId(Long userId);
+    List<UserMoney> getUserMoneyId(Long userId);
+    int setUserMoneyId(Map<String, BigDecimal> map);
+
 }
