@@ -14,6 +14,6 @@ public interface RateService{
     List<UserMoney> fromSubmit(UserMoney userMoney);
     List<UserMoney> getUserMoney(UserMoney userMoney);
     List<UserMoney> delId(Long userId,String userName);
-    List<UserMoney> putAddMoney(String setMoney,String curFieldMoney,Long userId,String userName);
+    List<UserMoney> putAddMoney(String setMoney,String curFieldMoney,Long userId,String userName,String depositOrWithdrawMoney);
 
 }
