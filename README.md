@@ -7,3 +7,9 @@
 2.MyBatis(xml)
 <br>
 3.DBeaver-->MariaDB
+
+#抓取匯率API
+1.新增資料
+2.修改資料
+3.刪除資料
+4.查詢資料
