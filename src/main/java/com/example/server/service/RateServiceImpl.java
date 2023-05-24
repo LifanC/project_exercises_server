@@ -92,11 +92,8 @@ public class RateServiceImpl implements RateService{
     public List<UserMoney> fromSubmit(UserMoney userMoney) {
         userMoney.setCreateTime(timeFormatter());
         rateExMapper.fromSubmit(userMoney);
-        List<UserMoney> data = rateExMapper.getUserMoneyAll(userMoney.getUserName());
-        data.forEach(e->{
-            userMoney.setUserNameId(formatteryyyyMMdd()+e.getUserId());
-            rateExMapper.setId(userMoney);
-        });
+        userMoney.setUserNameId(formatteryyyyMMdd()+userMoney.getUserId());
+        rateExMapper.setId(userMoney);
         List<UserMoney> showData = rateExMapper.getUserMoneyAll(userMoney.getUserName());
         return showData;
     }

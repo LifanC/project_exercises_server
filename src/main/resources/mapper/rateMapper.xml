@@ -84,7 +84,7 @@
         from project.currency_json
     </select>
 
-    <insert id="fromSubmit" parameterType="com.example.server.model.UserMoney">
+    <insert id="fromSubmit" parameterType="com.example.server.model.UserMoney" useGeneratedKeys="true" keyProperty="userId">
         insert into project.user_money (user_name_id,
                                         user_name,
                                         user_phone,
