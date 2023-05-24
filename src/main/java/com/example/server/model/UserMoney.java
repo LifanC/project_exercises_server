@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public class UserMoney extends CreateTime{
     private Long userId;
     private String userNameId;
-    private String userName, nation, rateName;
+    private String userName, userPhone, nation, rateName;
     private BigDecimal exMoney;
     private String curFieldMoney;
     private BigDecimal showMoney;

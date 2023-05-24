@@ -87,6 +87,7 @@
     <insert id="fromSubmit" parameterType="com.example.server.model.UserMoney">
         insert into project.user_money (user_name_id,
                                         user_name,
+                                        user_phone,
                                         nation,
                                         rate_name,
                                         ex_money,
@@ -96,11 +97,12 @@
                                         create_time)
         values (#{userNameId},
                 #{userName},
+                #{userPhone},
                 #{nation},
                 #{rateName},
-                #{exMoney},
+                0,
                 #{curFieldMoney},
-                #{showMoney},
+                0,
                 #{curNameJson},
                 #{createTime})
     </insert>
