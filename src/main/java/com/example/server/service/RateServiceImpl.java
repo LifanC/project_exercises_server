@@ -91,9 +91,6 @@ public class RateServiceImpl implements RateService{
     @Override
     public List<UserMoney> fromSubmit(UserMoney userMoney) {
         userMoney.setCreateTime(timeFormatter());
-        BigDecimal v = new BigDecimal(String.valueOf(userMoney.getExMoney()));
-        BigDecimal x = new BigDecimal(userMoney.getCurFieldMoney());
-        userMoney.setShowMoney(v.multiply(x));
         rateExMapper.fromSubmit(userMoney);
         List<UserMoney> data = rateExMapper.getUserMoneyAll(userMoney.getUserName());
         data.forEach(e->{
