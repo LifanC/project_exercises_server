@@ -13,3 +13,5 @@
 2.修改資料
 3.刪除資料
 4.查詢資料
+
+[文件](https://github.com/LifanC/project_exercises_document)
