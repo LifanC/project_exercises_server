@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -134,7 +135,7 @@ public class RateServiceImpl implements RateService{
                 BigDecimal b = depositNew.multiply(a);
                 BigDecimal c = new BigDecimal(String.valueOf(z.getShowMoney()));
                 //錢(*匯率)+錢(原本匯率)
-                BigDecimal dAdde = b.add(c);
+                BigDecimal dAdde = b.add(c).setScale(0, RoundingMode.HALF_UP);
                 map.put("exMoney",depositNew_Add_depositOld);
                 map.put("showMoney",dAdde);
                 map.put("userId",userId);
@@ -149,7 +150,7 @@ public class RateServiceImpl implements RateService{
                 BigDecimal b = withdrawNew.multiply(a);
                 BigDecimal c = new BigDecimal(String.valueOf(y.getShowMoney()));
                 //錢(原本匯率)-錢(*匯率)
-                BigDecimal dSubtract = c.subtract(b);
+                BigDecimal dSubtract = c.subtract(b).setScale(0, RoundingMode.HALF_UP);
                 map.put("exMoney",withdrawOld_Subtract_withdrawNew);
                 map.put("showMoney",dSubtract);
                 map.put("userId",userId);
