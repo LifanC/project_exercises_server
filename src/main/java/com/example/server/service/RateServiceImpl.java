@@ -8,7 +8,6 @@ import com.example.server.model.Rate;
 import com.example.server.model.UserMoney;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -18,7 +17,6 @@ import java.util.*;
 
 
 @Service
-@Transactional
 public class RateServiceImpl implements RateService{
 
     @Resource

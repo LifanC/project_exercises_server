@@ -16,6 +16,7 @@ public class RateController{
     @Resource
     private RateService rateService;
 
+
     @PostMapping("/getRate")
     @Transactional
     public void getRate(@RequestBody Rate rate) {
