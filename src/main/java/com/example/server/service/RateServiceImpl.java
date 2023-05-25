@@ -17,19 +17,19 @@ import java.util.*;
 
 
 @Service
-public class RateServiceImpl implements RateService{
+public class RateServiceImpl implements RateService {
 
     @Resource
     private RateExMapper rateExMapper;
 
-    public String timeFormatter(){
+    public String timeFormatter() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime date = LocalDateTime.now();
         String formattedDate = date.format(formatter);
         return formattedDate;
     }
 
-    public String formatteryyyyMMdd(){
+    public String formatteryyyyMMdd() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDateTime date = LocalDateTime.now();
         String formattedDate = date.format(formatter);
@@ -39,25 +39,21 @@ public class RateServiceImpl implements RateService{
     @Override
     public void saveRate(Rate rate) {
         Map<?, ?> map = (Map<?, ?>) rate.getRates();
-
-        List<Rate> data = rateExMapper.selectRate(rate.getDate());
-        if (data.size() == 0) {
-            map.forEach((k, v) -> {
-                rate.setCurLocal(rate.getBase());
-                rate.setCurLocalMoney("1");
-                rate.setCurField((String) k);
-                rate.setCurFieldMoney(v.toString());
-                rate.setCreateTime(timeFormatter());
-                List<CurrencyJson> dataJson = rateExMapper.selectCurrency((String) k);
-                dataJson.forEach(e -> {
-                    if(e.getCurrency().equals((String)k)){
-                        rate.setCurNameJson(e.getCurrencyName());
-                    }
-                });
-                rateExMapper.insertRate(rate);
-
+        rateExMapper.truncateTable();
+        map.forEach((k, v) -> {
+            rate.setCurLocal(rate.getBase());
+            rate.setCurLocalMoney("1");
+            rate.setCurField((String) k);
+            rate.setCurFieldMoney(v.toString());
+            rate.setCreateTime(timeFormatter());
+            List<CurrencyJson> dataJson = rateExMapper.selectCurrency((String) k);
+            dataJson.forEach(e -> {
+                if (e.getCurrency().equals((String) k)) {
+                    rate.setCurNameJson(e.getCurrencyName());
+                }
             });
-        }
+            rateExMapper.insertRate(rate);
+        });
     }
 
 
@@ -90,7 +86,7 @@ public class RateServiceImpl implements RateService{
     public List<UserMoney> fromSubmit(UserMoney userMoney) {
         userMoney.setCreateTime(timeFormatter());
         rateExMapper.fromSubmit(userMoney);
-        userMoney.setUserNameId(formatteryyyyMMdd()+userMoney.getUserId());
+        userMoney.setUserNameId(formatteryyyyMMdd() + userMoney.getUserId());
         rateExMapper.setId(userMoney);
         List<UserMoney> showData = rateExMapper.getUserMoneyAll(userMoney.getUserName());
         return showData;
@@ -102,7 +98,7 @@ public class RateServiceImpl implements RateService{
     }
 
     @Override
-    public List<UserMoney> delId(Long userId,String userName) {
+    public List<UserMoney> delId(Long userId, String userName) {
         rateExMapper.delId(userId);
         return rateExMapper.getUserMoneyAll(userName);
     }
@@ -117,8 +113,8 @@ public class RateServiceImpl implements RateService{
     ) {
         List<UserMoney> data = rateExMapper.getUserMoneyId(userId);
         Map map = new HashMap<>();
-        if("depositMoney".equals(depositOrWithdrawMoney)){
-            data.forEach(z->{
+        if ("depositMoney".equals(depositOrWithdrawMoney)) {
+            data.forEach(z -> {
                 BigDecimal depositNew = new BigDecimal(setMoney);
                 BigDecimal depositOld = new BigDecimal(String.valueOf(z.getExMoney()));
                 //錢(新)+錢(舊)
@@ -128,12 +124,12 @@ public class RateServiceImpl implements RateService{
                 BigDecimal c = new BigDecimal(String.valueOf(z.getShowMoney()));
                 //錢(*匯率)+錢(原本匯率)
                 BigDecimal dAdde = b.add(c).setScale(0, RoundingMode.HALF_UP);
-                map.put("exMoney",depositNew_Add_depositOld);
-                map.put("showMoney",dAdde);
-                map.put("userId",userId);
+                map.put("exMoney", depositNew_Add_depositOld);
+                map.put("showMoney", dAdde);
+                map.put("userId", userId);
             });
-        }else if("withdrawMoney".equals(depositOrWithdrawMoney)){
-            data.forEach(y->{
+        } else if ("withdrawMoney".equals(depositOrWithdrawMoney)) {
+            data.forEach(y -> {
                 BigDecimal withdrawNew = new BigDecimal(setMoney);
                 BigDecimal withdrawOld = new BigDecimal(String.valueOf(y.getExMoney()));
                 //錢(舊)-錢(新)
@@ -143,9 +139,9 @@ public class RateServiceImpl implements RateService{
                 BigDecimal c = new BigDecimal(String.valueOf(y.getShowMoney()));
                 //錢(原本匯率)-錢(*匯率)
                 BigDecimal dSubtract = c.subtract(b).setScale(0, RoundingMode.HALF_UP);
-                map.put("exMoney",withdrawOld_Subtract_withdrawNew);
-                map.put("showMoney",dSubtract);
-                map.put("userId",userId);
+                map.put("exMoney", withdrawOld_Subtract_withdrawNew);
+                map.put("showMoney", dSubtract);
+                map.put("userId", userId);
             });
         }
         rateExMapper.setUserMoneyId(map);

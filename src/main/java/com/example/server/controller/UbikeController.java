@@ -4,21 +4,23 @@ import com.example.server.model.Ubike;
 import com.example.server.service.UbikeService;
 import jakarta.annotation.Resource;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
 @RestController
+@Transactional
 @CrossOrigin(origins = "*")
 public class UbikeController {
 
     @Resource
     private UbikeService ubikeService;
 
-    @GetMapping("/delUbike")
+    @GetMapping("/queryUbike")
     public void delUbike(){
-        ubikeService.delUbike();
+        ubikeService.queryUbike();
     }
 
     @PostMapping("/getUbike")

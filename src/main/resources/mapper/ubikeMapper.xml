@@ -23,6 +23,10 @@
         <id property="infoDate" column="infoDate"/>
     </resultMap>
 
+    <delete id="truncateTable">
+        truncate table project.u_bike
+    </delete>
+
     <insert id="insertUbike" parameterType="com.example.server.model.Ubike">
         insert into project.u_bike(sno,
                                    sna,
@@ -61,12 +65,6 @@
                 #{infoTime},
                 #{infoDate})
     </insert>
-
-    <delete id="delDate" parameterType="String">
-        delete
-        from project.u_bike
-        where srcUpdateTime like concat('%',#{srcUpdateTime},'%')
-    </delete>
 
     <select id="selectUbike" resultMap="ubikeMap">
         select *

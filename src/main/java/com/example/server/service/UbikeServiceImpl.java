@@ -17,12 +17,24 @@ public class UbikeServiceImpl implements UbikeService {
     @Resource
     private UbikeMapper ubikeMapper;
 
-    @Override
-    public void delUbike() {
+    public String dateFormat(String TorY){
         Date date = new Date();
         SimpleDateFormat strDate = new SimpleDateFormat("yyyy-MM-dd");
-        String toDay = strDate.format(date);
-        ubikeMapper.delDate(toDay);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE,-1);
+        switch (TorY){
+            case "Today":
+                return strDate.format(date);
+            case "Yesterday":
+                return strDate.format(calendar.getTime());
+        }
+        return null;
+    }
+
+    @Override
+    public void queryUbike() {
+        ubikeMapper.truncateTable();
     }
 
     @Override
@@ -32,18 +44,11 @@ public class UbikeServiceImpl implements UbikeService {
 
     @Override
     public List<Ubike> getOnlyList(String sarea) {
-        Date date = new Date();
-        SimpleDateFormat strDate = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar rightNow = Calendar.getInstance();
-        rightNow.setTime(date);
-        rightNow.add(Calendar.DATE,-1);
-        String toDay = strDate.format(date);
-        String yesDay = strDate.format(rightNow.getTime());
-        List<Ubike> dataA = ubikeMapper.selectUbike(sarea,toDay);
+        List<Ubike> dataA = ubikeMapper.selectUbike(sarea,dateFormat("Today"));
         if(dataA.size() == 0){
-            return ubikeMapper.selectUbike(sarea,yesDay);
+            return ubikeMapper.selectUbike(sarea,dateFormat("Yesterday"));
         }else{
-            return ubikeMapper.selectUbike(sarea,toDay);
+            return ubikeMapper.selectUbike(sarea,dateFormat("Today"));
         }
     }
 }

@@ -10,11 +10,11 @@
         <id property="date" column="date"/>
         <id property="curNameJson" column="cur_name_json"/>
     </resultMap>
-    <select id="selectRate" resultMap="rateMap">
-        select *
-        from project.exchange_rate rate
-        where rate.date = #{date}
-    </select>
+
+    <delete id="truncateTable">
+        truncate table project.exchange_rate
+    </delete>
+
     <insert id="insertRate" parameterType="com.example.server.model.Rate">
         insert into project.exchange_rate (cur_local,
                                            cur_local_money,

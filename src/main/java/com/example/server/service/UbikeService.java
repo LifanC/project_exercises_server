@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface UbikeService {
-    void delUbike ();
+    void queryUbike ();
     void saveUbike (Ubike ubike);
     List<Ubike> getOnlyList (String sarea);
 }
