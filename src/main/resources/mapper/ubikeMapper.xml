@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.server.mapper.UbikeMapper">
+    <resultMap id="ubikeMap" type="com.example.server.model.Ubike">
+        <id property="uBikeId" column="u_bike_id"/>
+        <id property="sno" column="sno"/>
+        <id property="sna" column="sna"/>
+        <id property="tot" column="tot"/>
+        <id property="sbi" column="sbi"/>
+        <id property="sarea" column="sarea"/>
+        <id property="mday" column="mday"/>
+        <id property="lat" column="lat"/>
+        <id property="lng" column="lng"/>
+        <id property="ar" column="ar"/>
+        <id property="sareaen" column="sareaen"/>
+        <id property="snaen" column="snaen"/>
+        <id property="aren" column="aren"/>
+        <id property="bemp" column="bemp"/>
+        <id property="act" column="act"/>
+        <id property="srcUpdateTime" column="srcUpdateTime"/>
+        <id property="updateTime" column="updateTime"/>
+        <id property="infoTime" column="infoTime"/>
+        <id property="infoDate" column="infoDate"/>
+    </resultMap>
+
+    <insert id="insertUbike" parameterType="com.example.server.model.Ubike">
+        insert into project.u_bike(sno,
+                                   sna,
+                                   tot,
+                                   sbi,
+                                   sarea,
+                                   mday,
+                                   lat,
+                                   lng,
+                                   ar,
+                                   sareaen,
+                                   snaen,
+                                   aren,
+                                   bemp,
+                                   act,
+                                   srcUpdateTime,
+                                   updateTime,
+                                   infoTime,
+                                   infoDate)
+        values (#{sno},
+                #{sna},
+                #{tot},
+                #{sbi},
+                #{sarea},
+                #{mday},
+                #{lat},
+                #{lng},
+                #{ar},
+                #{sareaen},
+                #{snaen},
+                #{aren},
+                #{bemp},
+                #{act},
+                #{srcUpdateTime},
+                #{updateTime},
+                #{infoTime},
+                #{infoDate})
+    </insert>
+
+    <delete id="delDate" parameterType="String">
+        delete
+        from project.u_bike
+        where srcUpdateTime like concat('%',#{srcUpdateTime},'%')
+    </delete>
+
+    <select id="selectUbike" resultMap="ubikeMap">
+        select *
+        from project.u_bike bike
+        where bike.sarea = #{sarea}
+        and bike.srcUpdateTime like concat('%',#{srcUpdateTime},'%')
+    </select>
+
+
+
+</mapper>
