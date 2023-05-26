@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.server.mapper.ToeicMapper">
+    <resultMap id="toeicMap" type="com.example.server.model.Toeic">
+        <id property="toeicId" column="toeic_id"/>
+        <id property="english" column="english"/>
+        <id property="chinese" column="chinese"/>
+        <id property="example" column="example"/>
+        <id property="explain" column="explain"/>
+    </resultMap>
+    <select id="toeicCount" resultType="java.lang.Integer">
+        select count(0) from project.toeic_words
+    </select>
+
+    <select id="toeicWords" resultMap="toeicMap">
+        select *
+        from project.toeic_words toeic
+        where toeic.toeic_id = #{toeicId}
+    </select>
+
+    <insert id="toeicFromSubmit" parameterType="com.example.server.model.Toeic">
+        insert into project.toeic_words(english,chinese)
+        values (#{english},#{chinese})
+    </insert>
+
+    <update id="toeicFromSubmitEx" parameterType="map">
+        update project.toeic_words toeic
+        set toeic.example = #{example} , toeic.explain = #{explain}
+        where toeic.toeic_id = #{toeicId}
+    </update>
+
+    <update id="setData" parameterType="map">
+        update project.toeic_words toeic
+        <set>
+            <if test="english != null and english != ''">
+                toeic.english = #{english},
+            </if>
+            <if test="chinese != null and chinese != ''">
+                toeic.chinese = #{chinese},
+            </if>
+            <if test="example != null and example != ''">
+                toeic.example = #{example},
+            </if>
+            <if test="explain != null and explain != ''">
+                toeic.explain = #{explain}
+            </if>
+        </set>
+        where toeic.toeic_id = #{toeicId}
+    </update>
+
+</mapper>
