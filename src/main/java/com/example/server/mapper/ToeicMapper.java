@@ -13,5 +13,6 @@ public interface ToeicMapper {
     int toeicFromSubmit(Toeic toeic);
     int toeicFromSubmitEx(Map map);
     int setData(Map map);
+    List<Toeic> queryToeicWords (String english);
 
 }

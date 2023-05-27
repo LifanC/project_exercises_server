@@ -48,4 +48,10 @@
         where toeic.toeic_id = #{toeicId}
     </update>
 
+    <select id="queryToeicWords" resultMap="toeicMap">
+        select *
+        from project.toeic_words toeic
+        where toeic.english like concat('%', #{english}, '%')
+    </select>
+
 </mapper>

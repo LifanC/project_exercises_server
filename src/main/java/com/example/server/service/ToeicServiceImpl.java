@@ -51,5 +51,14 @@ public class ToeicServiceImpl implements ToeicService {
         return toeicMapper.toeicWords(Long.valueOf(toeicId));
     }
 
+    @Override
+    public List<Toeic> queryToeicWords(String english){
+        if(english.equals("")){
+            return toeicMapper.toeicWords(Long.valueOf(randomNum));
+        }else {
+            return toeicMapper.queryToeicWords(english);
+        }
+    }
+
 
 }

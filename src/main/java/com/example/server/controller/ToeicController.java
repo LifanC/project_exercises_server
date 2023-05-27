@@ -3,6 +3,7 @@ package com.example.server.controller;
 import com.example.server.model.Toeic;
 import com.example.server.service.ToeicService;
 import jakarta.annotation.Resource;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +44,11 @@ public class ToeicController {
             @PathVariable String dialogExplain
     ) {
         return toeicService.setData(toeicId,dialogEnglish,dialogChinese,dialogExample,dialogExplain);
+    }
+
+    @GetMapping("/queryToeicWords")
+    public List<Toeic> queryToeicWords(@Param("english") String english){
+        return toeicService.queryToeicWords(english);
     }
 
 }
