@@ -122,6 +122,7 @@
         select *
         from project.user_money
         where user_name like concat('%', #{userName}, '%')
+        order by create_time desc
     </select>
 
     <update id="setId" parameterType="com.example.server.model.UserMoney">
