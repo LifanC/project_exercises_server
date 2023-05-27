@@ -160,6 +160,7 @@
     <select id="getAll" resultMap="getId">
         select *
         from project.user_money
+        order by create_time desc
     </select>
 
 

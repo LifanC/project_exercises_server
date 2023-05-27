@@ -88,8 +88,7 @@ public class RateServiceImpl implements RateService {
         rateExMapper.fromSubmit(userMoney);
         userMoney.setUserNameId(formatteryyyyMMdd() + userMoney.getUserId());
         rateExMapper.setId(userMoney);
-        List<UserMoney> showData = rateExMapper.getUserMoneyAll(userMoney.getUserName());
-        return showData;
+        return rateExMapper.getUserMoneyAll(userMoney.getUserName());
     }
 
     @Override
