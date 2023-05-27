@@ -94,7 +94,11 @@ public class RateServiceImpl implements RateService {
 
     @Override
     public List<UserMoney> getUserMoney(UserMoney userMoney) {
-        return rateExMapper.getUserMoneyAll(userMoney.getUserName());
+        if(userMoney.getUserName().equals("")){
+            return rateExMapper.getAll();
+        }else {
+            return rateExMapper.getUserMoneyAll(userMoney.getUserName());
+        }
     }
 
     @Override

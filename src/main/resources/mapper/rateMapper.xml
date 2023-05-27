@@ -157,5 +157,10 @@
         where x.user_id = #{userId}
     </update>
 
+    <select id="getAll" resultMap="getId">
+        select *
+        from project.user_money
+    </select>
+
 
 </mapper>

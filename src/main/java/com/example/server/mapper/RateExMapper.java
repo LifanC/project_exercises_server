@@ -26,4 +26,6 @@ public interface RateExMapper {
     List<UserMoney> getUserMoneyId(Long userId);
     int setUserMoneyId(Map<String, BigDecimal> map);
 
+    List<UserMoney> getAll();
+
 }
