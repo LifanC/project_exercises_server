@@ -70,7 +70,17 @@
         select *
         from project.u_bike bike
         where bike.sarea = #{sarea}
-        and bike.srcUpdateTime like concat('%',#{srcUpdateTime},'%')
+          <if test="ar != null and ar != ''">
+              and bike.ar = #{ar}
+          </if>
+          and bike.srcUpdateTime like concat('%', #{srcUpdateTime}, '%')
+    </select>
+
+    <select id="selectUbikes" resultMap="ubikeMap">
+        select *
+        from project.u_bike bike
+        where bike.sarea = #{sarea}
+        and bike.srcUpdateTime like concat('%', #{srcUpdateTime}, '%')
     </select>
 
 

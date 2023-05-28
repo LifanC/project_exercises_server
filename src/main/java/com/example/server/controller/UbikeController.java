@@ -29,11 +29,15 @@ public class UbikeController {
     }
 
     @GetMapping("/getOnlyList")
-    public List<Ubike> getOnlyList(@Param("sarea") String sarea){
-        return ubikeService.getOnlyList(sarea);
+    public List<Ubike> getOnlyList(@Param("sarea") String sarea,@Param("ar") String ar){
+        return ubikeService.getOnlyList(sarea,ar);
 
     }
 
+    @GetMapping("/getOnlyLists")
+    public List<Ubike> getOnlyLists(@Param("sarea") String sarea){
+        return ubikeService.getOnlyLists(sarea);
 
+    }
 
 }

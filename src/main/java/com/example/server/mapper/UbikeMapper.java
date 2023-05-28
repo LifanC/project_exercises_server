@@ -13,7 +13,8 @@ public interface UbikeMapper {
 
     int insertUbike(Ubike ubike);
 
-    List<Ubike> selectUbike(String sarea, String srcUpdateTime);
+    List<Ubike> selectUbike(String sarea, String ar, String srcUpdateTime);
+    List<Ubike> selectUbikes(String sarea, String srcUpdateTime);
 
 
 }

@@ -43,12 +43,22 @@ public class UbikeServiceImpl implements UbikeService {
     }
 
     @Override
-    public List<Ubike> getOnlyList(String sarea) {
-        List<Ubike> dataA = ubikeMapper.selectUbike(sarea,dateFormat("Today"));
+    public List<Ubike> getOnlyList(String sarea,String ar) {
+        List<Ubike> dataA = ubikeMapper.selectUbike(sarea,ar,dateFormat("Today"));
         if(dataA.size() == 0){
-            return ubikeMapper.selectUbike(sarea,dateFormat("Yesterday"));
+            return ubikeMapper.selectUbike(sarea,ar,dateFormat("Yesterday"));
         }else{
-            return ubikeMapper.selectUbike(sarea,dateFormat("Today"));
+            return ubikeMapper.selectUbike(sarea,ar,dateFormat("Today"));
+        }
+    }
+
+    @Override
+    public List<Ubike> getOnlyLists(String sarea) {
+        List<Ubike> dataA = ubikeMapper.selectUbikes(sarea,dateFormat("Today"));
+        if(dataA.size() == 0){
+            return ubikeMapper.selectUbikes(sarea,dateFormat("Yesterday"));
+        }else{
+            return ubikeMapper.selectUbikes(sarea,dateFormat("Today"));
         }
     }
 }
