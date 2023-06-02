@@ -20,6 +20,8 @@ public class RateController{
     @PostMapping("/getRate")
     @Transactional
     public void getRate(@RequestBody Rate rate) {
+
+
         rateService.saveRate(rate);
     }
 

@@ -4,7 +4,6 @@ import com.example.server.mapper.ToeicMapper;
 import com.example.server.model.Toeic;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +16,7 @@ public class ToeicServiceImpl implements ToeicService {
     private ToeicMapper toeicMapper;
 
     private Integer randomNum;
+
     @Override
     public List<Toeic> toeicWords() {
         int id = toeicMapper.toeicCount();
@@ -32,9 +32,9 @@ public class ToeicServiceImpl implements ToeicService {
     @Override
     public List<Toeic> toeicFromSubmitEx(String example, String explain) {
         Map map = new HashMap<>();
-        map.put("toeicId",randomNum);
-        map.put("example",example);
-        map.put("explain",explain);
+        map.put("toeicId", randomNum);
+        map.put("example", example);
+        map.put("explain", explain);
         toeicMapper.toeicFromSubmitEx(map);
         return toeicMapper.toeicWords(Long.valueOf(randomNum));
     }
@@ -42,20 +42,20 @@ public class ToeicServiceImpl implements ToeicService {
     @Override
     public List<Toeic> setData(String toeicId, String dialogEnglish, String dialogChinese, String dialogExample, String dialogExplain) {
         Map map = new HashMap<>();
-        map.put("toeicId",Long.valueOf(toeicId));
-        map.put("english",dialogEnglish);
-        map.put("chinese",dialogChinese);
-        map.put("example",dialogExample);
-        map.put("explain",dialogExplain);
+        map.put("toeicId", Long.valueOf(toeicId));
+        map.put("english", dialogEnglish);
+        map.put("chinese", dialogChinese);
+        map.put("example", dialogExample);
+        map.put("explain", dialogExplain);
         toeicMapper.setData(map);
         return toeicMapper.toeicWords(Long.valueOf(toeicId));
     }
 
     @Override
-    public List<Toeic> queryToeicWords(String english){
-        if(english.equals("")){
+    public List<Toeic> queryToeicWords(String english) {
+        if (english.equals("")) {
             return toeicMapper.toeicWords(Long.valueOf(randomNum));
-        }else {
+        } else {
             return toeicMapper.queryToeicWords(english);
         }
     }
