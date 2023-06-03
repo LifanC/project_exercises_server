@@ -12,6 +12,11 @@
         select count(0) from project.toeic_words
     </select>
 
+    <select id="toeicCountData" resultType="java.lang.Integer">
+        select count(0) from project.toeic_words
+        where english = #{english}
+    </select>
+
     <select id="toeicWords" resultMap="toeicMap">
         select *
         from project.toeic_words toeic

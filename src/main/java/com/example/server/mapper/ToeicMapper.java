@@ -9,6 +9,7 @@ import java.util.Map;
 @Mapper
 public interface ToeicMapper {
     int toeicCount();
+    int toeicCountData(String english);
     List<Toeic> toeicWords(Long toeicId);
     int toeicFromSubmit(Toeic toeic);
     int toeicFromSubmitEx(Map map);

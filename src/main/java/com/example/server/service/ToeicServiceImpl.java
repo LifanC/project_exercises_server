@@ -26,7 +26,10 @@ public class ToeicServiceImpl implements ToeicService {
 
     @Override
     public void toeicFromSubmit(Toeic toeic) {
-        toeicMapper.toeicFromSubmit(toeic);
+        int count = toeicMapper.toeicCountData(toeic.getEnglish());
+        if (count == 0) {
+            toeicMapper.toeicFromSubmit(toeic);
+        }
     }
 
     @Override

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.server.mapper.GodMapper">
+    <resultMap id="GodMap" type="com.example.server.model.God">
+        <id property="godId" column="god_id"/>
+        <id property="name" column="name"/>
+        <id property="chatper" column="chatper"/>
+        <id property="section" column="section"/>
+        <id property="detailCn" column="detail_cn"/>
+        <id property="detailEn" column="detail_en"/>
+    </resultMap>
+    <select id="allGod" resultMap="GodMap">
+        select *
+        from project.all_god
+    </select>
+    <select id="getGodChetperAndSection" resultMap="GodMap">
+        select * from project.all_god god
+        <where>
+            god.name = #{name}
+            <if test="chatper != null and chatper != ''"> and god.chatper = #{chatper}</if>
+        </where>
+    </select>
+    <select id="getTenGodData" resultMap="GodMap">
+        select * from project.all_god god
+        <where>
+            god.name = #{name}
+            <if test="chatper != null and chatper != ''"> and god.chatper = #{chatper}</if>
+        </where>
+        limit 30 offset #{skip};
+    </select>
+    <select id="getAllCount" resultType="java.lang.Integer">
+        select count(0) from project.all_god
+    </select>
+    <select id="getId" resultMap="GodMap">
+        select * from project.all_god god
+        where god.god_id = #{godId}
+    </select>
+</mapper>
