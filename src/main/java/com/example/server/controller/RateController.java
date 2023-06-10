@@ -11,7 +11,7 @@ import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "*")
-public class RateController{
+public class RateController {
 
     @Resource
     private RateService rateService;
@@ -20,8 +20,6 @@ public class RateController{
     @PostMapping("/getRate")
     @Transactional
     public void getRate(@RequestBody Rate rate) {
-
-
         rateService.saveRate(rate);
     }
 
@@ -46,38 +44,38 @@ public class RateController{
     }
 
     @GetMapping("/getNationNameAll")
-    public List<NationNameAll> getNationNameAll(){
+    public List<NationNameAll> getNationNameAll() {
         return rateService.getNationNameAll();
     }
 
     /**
      * 新增
-     * */
+     */
     @PostMapping("/fromSubmit")
-    public List<UserMoney> fromSubmit(@RequestBody UserMoney userMoney){
+    public List<UserMoney> fromSubmit(@RequestBody UserMoney userMoney) {
         return rateService.fromSubmit(userMoney);
     }
 
     @GetMapping("/getUserMoney")
-    public List<UserMoney> getUserMoney(UserMoney userMoney){
+    public List<UserMoney> getUserMoney(UserMoney userMoney) {
         return rateService.getUserMoney(userMoney);
     }
 
     /**
      * 刪除
-     * */
+     */
     @DeleteMapping("/delId/{userId}/{userName}")
     public List<UserMoney> delId(
             @PathVariable("userId") Long userId,
             @PathVariable("userName") String userName
-    ){
-        return rateService.delId(userId,userName);
+    ) {
+        return rateService.delId(userId, userName);
     }
 
     /**
      * 修改
-     * 存錢
-     * */
+     * 存錢、取錢
+     */
     @PutMapping("/putAddMoney/{setMoney}/{curFieldMoney}/{userId}/{userName}/{depositOrWithdrawMoney}")
     public List<UserMoney> putAddMoney(
             @PathVariable String setMoney,
@@ -85,11 +83,9 @@ public class RateController{
             @PathVariable Long userId,
             @PathVariable String userName,
             @PathVariable String depositOrWithdrawMoney
-    ){
-        return rateService.putAddMoney(setMoney,curFieldMoney,userId,userName,depositOrWithdrawMoney);
+    ) {
+        return rateService.putAddMoney(setMoney, curFieldMoney, userId, userName, depositOrWithdrawMoney);
     }
-
-
 
 
 }
