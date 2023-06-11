@@ -6,48 +6,56 @@
         <id property="userNameId" column="user_name_id"/>
         <id property="userName" column="user_name"/>
         <id property="passWord" column="pass_word"/>
+        <id property="createTime" column="create_time"/>
     </resultMap>
-    <select id="count" resultType="java.lang.Integer">
+    <select id="countUserName" resultType="java.lang.Integer">
         select count(0)
         from project.function_data f
-        where f.user_name = #{userName} and f.pass_word = #{passWord}
+        where f.user_name = #{userName}
+    </select>
+    <select id="userName" resultMap="FunctionMap">
+        select *
+        from project.function_data f
+        where f.user_name = #{userName}
     </select>
     <insert id="register" parameterType="com.example.server.model.CustomerData">
-        insert into project.function_data (user_name_id,user_name,pass_word,create_time)
+        insert into project.function_data (user_name_id, user_name, pass_word, create_time)
         values (#{userNameId}, #{userName}, #{passWord}, #{createTime})
     </insert>
-    <insert id="registerMoney" parameterType="com.example.server.model.CustomerData">
-        insert into project.function_money (user_name_id,user_name,cur_number,ex_money,cur_field_money,show_money,create_time,update_time)
-        values (#{userNameId}, #{userName}, '', 0, '', 0, #{createTime}, #{updateTime})
+    <insert id="registerMoney" parameterType="com.example.server.model.CustomerDataMoney" useGeneratedKeys="true"
+            keyProperty="function_money_id">
+        insert into project.function_money (user_name_id, user_name, cur_number, ex_money, cur_field_money, show_money,
+                                            create_time)
+        values (#{userNameId}, #{userName}, '', 0, '', 0, #{createTime})
     </insert>
     <select id="login" resultMap="FunctionMap">
         select *
         from project.function_data f
-        where f.user_name = #{userName} and f.pass_word = #{passWord}
+        where f.user_name = #{userName}
+          and f.pass_word = #{passWord}
     </select>
     <update id="edit">
         update project.function_data
-        set pass_word = #{param2}
+        set pass_word   = #{param2},
+            update_time = #{param3}
         where user_name_id = #{param1}
     </update>
     <resultMap id="FunctionMoneyMap" type="com.example.server.model.CustomerDataMoney">
         <id property="function_money_id" column="function_money_id"/>
-        <id property="user_name_id" column="user_name_id"/>
-        <id property="user_name" column="user_name"/>
+        <id property="userNameId" column="user_name_id"/>
+        <id property="userName" column="user_name"/>
         <id property="cur_number" column="cur_number"/>
         <id property="ex_money" column="ex_money"/>
         <id property="cur_field_money" column="cur_field_money"/>
         <id property="show_money" column="show_money"/>
-        <id property="create_time" column="create_time"/>
+        <id property="createTime" column="create_time"/>
         <id property="update_time" column="update_time"/>
         <id property="currency_name" column="currency_name"/>
         <id property="currency_nation" column="currency_nation"/>
     </resultMap>
     <select id="userId" resultMap="FunctionMoneyMap">
-        select
-            *
-        from
-            project.function_money
+        select *
+        from project.function_money
         where user_name_id = #{userNameId}
     </select>
     <update id="save_cur">
@@ -57,12 +65,10 @@
         where user_name_id = #{param1}
     </update>
     <select id="userNameId" resultMap="FunctionMoneyMap">
-        select
-            *
-        from
-            project.function_money fm
-                left join project.currency_json cj on
-                fm.cur_number = cj.currency
+        select *
+        from project.function_money fm
+                 left join project.currency_json cj on
+            fm.cur_number = cj.currency
         where user_name_id = #{user_name_id}
     </select>
     <update id="setNameId" parameterType="map">
@@ -72,4 +78,5 @@
             x.update_time = #{update_time}
         where x.user_name_id = #{user_name_id}
     </update>
+
 </mapper>

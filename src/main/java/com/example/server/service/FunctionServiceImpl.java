@@ -3,6 +3,8 @@ package com.example.server.service;
 import com.example.server.mapper.FunctionMapper;
 import com.example.server.model.CustomerData;
 import com.example.server.model.CustomerDataMoney;
+import com.example.server.model.SymmetricDecryption;
+import com.example.server.model.SymmetricEncryption;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +22,8 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Resource
     private FunctionMapper functionMapper;
+
+    private final String btye_key = "0123456789abcdef";
 
     public String timeFormatter() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd hh:mm");
@@ -38,16 +43,22 @@ public class FunctionServiceImpl implements FunctionService {
      * 註冊
      */
     @Override
-    public void register(CustomerData customerData) {
-        int count = functionMapper.count(customerData);
+    public void register(CustomerData customerData) throws Exception {
+        int count = functionMapper.countUserName(customerData);
         int randomNumber = (int) (Math.random() * 10000) + 1;
         String randomString = String.format("%04d", randomNumber);
         if (count == 0) {
+            //密碼加密
+            String password = SymmetricEncryption.encryption(customerData.getPassWord(),btye_key);
+            customerData.setPassWord(password);
             customerData.setCreateTime(timeFormatter());
-            customerData.setUpdateTime(timeFormatter());
             customerData.setUserNameId(formatteryyyyMMdd() + randomString);
+            CustomerDataMoney customerDataMoney = new CustomerDataMoney();
+            customerDataMoney.setUserNameId(formatteryyyyMMdd() + randomString);
+            customerDataMoney.setUserName(customerData.getUserName());
+            customerDataMoney.setCreateTime(timeFormatter());
             functionMapper.register(customerData);
-            functionMapper.registerMoney(customerData);
+            functionMapper.registerMoney(customerDataMoney);
         }
     }
 
@@ -55,9 +66,16 @@ public class FunctionServiceImpl implements FunctionService {
      * 登入
      */
     @Override
-    public List<CustomerData> login(CustomerData customerData) {
-        int count = functionMapper.count(customerData);
-        if (count > 0) {
+    public List<CustomerData> login(CustomerData customerData) throws Exception {
+        List<CustomerData> list = functionMapper.userName(customerData);
+        List<String> data = new ArrayList<>();
+        list.forEach(e->{
+            data.add(e.getPassWord());
+        });
+        //密碼解密
+        String password = SymmetricDecryption.decryption(data.get(0),btye_key);
+        if(password.equals(customerData.getPassWord())){
+            customerData.setPassWord(data.get(0));
             return functionMapper.login(customerData);
         }
         return null;
@@ -67,8 +85,11 @@ public class FunctionServiceImpl implements FunctionService {
      * 修改
      */
     @Override
-    public void edit(String userNameId, String passWord) {
-        functionMapper.edit(userNameId, passWord);
+    public List<CustomerDataMoney> edit(String userNameId, String passWord) throws Exception {
+        //密碼加密
+        String password = SymmetricEncryption.encryption(passWord,btye_key);
+        functionMapper.edit(userNameId, password, timeFormatter());
+        return functionMapper.userNameId(userNameId);
     }
 
     /**

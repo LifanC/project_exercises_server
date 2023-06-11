@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Component
 @RestController
 @CrossOrigin(origins = "*")
@@ -36,7 +37,7 @@ public class FunctionController {
      * 註冊
      */
     @PostMapping("/register")
-    public void register(@RequestBody CustomerData customerData) {
+    public void register(@RequestBody CustomerData customerData) throws Exception {
         functionService.register(customerData);
     }
 
@@ -58,7 +59,7 @@ public class FunctionController {
             data.add(redisTemplate.opsForValue().get("userName"));
             data.add(redisTemplate.opsForValue().get("userNameId"));
             return data;
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             List<String> dataError = new ArrayList<>();
             dataError.add("登入失敗，請再輸入一次");
             dataError.add("");
@@ -70,44 +71,44 @@ public class FunctionController {
      * 登出
      */
     @GetMapping("/sign_out")
-    public List<String> sign_out() {
+    public List<String> sign_out() throws Exception {
         redisTemplate.delete("userName");
         redisTemplate.delete("userNameId");
-        List<String> data = new ArrayList<>();
-        data.add("未登入");
-        data.add("");
-        return data;
+        List<String> list = new ArrayList<>();
+        list.add("未登入");
+        list.add("");
+        return list;
     }
 
     /**
      * 修改
      */
     @PutMapping("/edit/{userNameId}/{passWord}")
-    public void edit(
+    public List<CustomerDataMoney> edit(
             @PathVariable String userNameId,
             @PathVariable String passWord
-    ){
-        functionService.edit(userNameId,passWord);
+    ) throws Exception {
+        return functionService.edit(userNameId, passWord);
     }
 
     /**
      * 查詢function_money的資料
-     * */
+     */
     @GetMapping("/function_money")
-    public List<CustomerDataMoney> function_money(@Param("userNameId") String userNameId){
+    public List<CustomerDataMoney> function_money(@Param("userNameId") String userNameId) {
         return functionService.function_money_userNameId(userNameId);
     }
 
     /**
      * 存幣別、匯率
-     * */
+     */
     @PutMapping("/save_cur/{userNameId}/{cField}/{cFieldMoney}")
     public List<CustomerDataMoney> save_cur(
             @PathVariable String userNameId,
             @PathVariable String cField,
             @PathVariable String cFieldMoney
-    ){
-        functionService.save_cur(userNameId,cField,cFieldMoney);
+    ) {
+        functionService.save_cur(userNameId, cField, cFieldMoney);
         return functionService.function_money_userNameId(userNameId);
     }
 
@@ -120,4 +121,5 @@ public class FunctionController {
     ) {
         return functionService.putAddMoney(setMoney, curFieldMoney, userNameId, depositOrWithdrawMoney);
     }
+
 }

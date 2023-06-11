@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CustomerDataMoney{
     private Long function_money_id;
-    private String user_name_id;
-    private String user_name;
+    private String userNameId;
+    private String userName;
     private String cur_number;
     private Double ex_money;
     private String cur_field_money;
     private Double show_money;
-    private String create_time;
+    private String createTime;
     private String update_time;
     private String currency_name;
     private String currency_nation;
