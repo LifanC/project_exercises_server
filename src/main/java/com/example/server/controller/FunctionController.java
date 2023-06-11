@@ -2,6 +2,7 @@ package com.example.server.controller;
 
 import com.example.server.model.CustomerData;
 import com.example.server.model.CustomerDataMoney;
+import com.example.server.model.Ins_del;
 import com.example.server.service.FunctionService;
 import jakarta.annotation.Resource;
 import org.apache.ibatis.annotations.Param;
@@ -120,6 +121,16 @@ public class FunctionController {
             @PathVariable String depositOrWithdrawMoney
     ) {
         return functionService.putAddMoney(setMoney, curFieldMoney, userNameId, depositOrWithdrawMoney);
+    }
+
+    @PostMapping("/ins_del")
+    public List<Ins_del> ins_del(@RequestBody Ins_del ins_del){
+        return functionService.ins_del(ins_del);
+    }
+
+    @GetMapping("/get_ins_del")
+    public List<Ins_del> get_ins_del(Ins_del ins_del){
+        return functionService.get_ins_del(ins_del);
     }
 
 }

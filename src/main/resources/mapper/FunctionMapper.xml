@@ -78,5 +78,24 @@
             x.update_time = #{update_time}
         where x.user_name_id = #{user_name_id}
     </update>
+    <insert id="add" parameterType="com.example.server.model.Ins_del">
+        insert into project.ins_del (calendarDetails, ex)
+        values (#{calendarDetails}, #{ex})
+    </insert>
+    <select id="findAdd" resultType="java.lang.Integer">
+        select count(0)
+        from project.ins_del
+        where calendarDetails = #{calendarDetails}
+    </select>
+    <update id="set" parameterType="com.example.server.model.Ins_del">
+        update project.ins_del
+        set ex = #{ex}
+        where calendarDetails = #{calendarDetails}
+    </update>
+    <select id="sel" resultType="com.example.server.model.Ins_del">
+        select *
+        from project.ins_del
+        where calendarDetails = #{calendarDetails}
+    </select>
 
 </mapper>

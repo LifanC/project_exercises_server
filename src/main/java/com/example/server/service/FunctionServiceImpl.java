@@ -1,10 +1,7 @@
 package com.example.server.service;
 
 import com.example.server.mapper.FunctionMapper;
-import com.example.server.model.CustomerData;
-import com.example.server.model.CustomerDataMoney;
-import com.example.server.model.SymmetricDecryption;
-import com.example.server.model.SymmetricEncryption;
+import com.example.server.model.*;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -145,5 +142,27 @@ public class FunctionServiceImpl implements FunctionService {
         }
         functionMapper.setNameId(map);
         return functionMapper.userNameId(userNameId);
+    }
+
+    @Override
+    public List<Ins_del> ins_del(Ins_del ins_del) {
+        int count = functionMapper.findAdd(ins_del);
+        if (count == 0) {
+            if("1".equals(ins_del.getIns())){
+                functionMapper.add(ins_del);
+            }
+        }else{
+            if("1".equals(ins_del.getIns())){
+                functionMapper.set(ins_del);
+            }else if("1".equals(ins_del.getDel())){
+                functionMapper.set(ins_del);
+            }
+        }
+        return functionMapper.sel(ins_del);
+    }
+
+    @Override
+    public List<Ins_del> get_ins_del(Ins_del ins_del) {
+        return functionMapper.sel(ins_del);
     }
 }

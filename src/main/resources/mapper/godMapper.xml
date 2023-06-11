@@ -16,7 +16,7 @@
     <select id="getGodChetperAndSection" resultMap="GodMap">
         select * from project.all_god god
         <where>
-            god.name = #{name}
+            <if test="name != null and name != ''">god.name = #{name}</if>
             <if test="chatper != null and chatper != ''"> and god.chatper = #{chatper}</if>
         </where>
     </select>
