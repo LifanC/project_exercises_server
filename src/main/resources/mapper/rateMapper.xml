@@ -10,11 +10,9 @@
         <id property="date" column="date"/>
         <id property="curNameJson" column="cur_name_json"/>
     </resultMap>
-
     <delete id="truncateTable">
         truncate table project.exchange_rate
     </delete>
-
     <insert id="insertRate" parameterType="com.example.server.model.Rate">
         insert into project.exchange_rate (cur_local,
                                            cur_local_money,
@@ -31,7 +29,6 @@
                 #{createTime},
                 #{curNameJson})
     </insert>
-
     <resultMap id="jsonMap" type="com.example.server.model.CurrencyJson">
         <id property="currencyId" column="currency_id"/>
         <id property="currency" column="currency"/>
@@ -43,126 +40,14 @@
         from project.currency_json
         where currency = #{currency}
     </select>
-
     <select id="getOnly" resultMap="rateMap">
         select *
         from project.exchange_rate rate
         where rate.cur_field = #{curField}
         order by rate.date desc
     </select>
-
-    <resultMap id="nationOnly" type="com.example.server.model.NationNameAll">
-        <id property="currency" column="currency"/>
-        <id property="currencyName" column="currency_name"/>
-        <id property="currencyNation" column="currency_nation"/>
-    </resultMap>
-    <select id="getNationOnly" resultMap="nationOnly">
-        select *
-        from project.currency_json json
-        where json.currency = #{curField}
-    </select>
-
     <select id="getNation" resultMap="jsonMap">
         select *
         from project.currency_json
     </select>
-
-    <select id="getNationName" resultMap="jsonMap">
-        select *
-        from project.currency_json
-        where currency = #{curField}
-    </select>
-
-    <resultMap id="jsonNationNameAllMap" type="com.example.server.model.NationNameAll">
-        <id property="currency" column="currency"/>
-        <id property="currencyName" column="currency_name"/>
-        <id property="currencyNation" column="currency_nation"/>
-    </resultMap>
-
-    <select id="getNationNameAll" resultMap="jsonNationNameAllMap">
-        select *
-        from project.currency_json
-    </select>
-
-    <insert id="fromSubmit" parameterType="com.example.server.model.UserMoney" useGeneratedKeys="true" keyProperty="userId">
-        insert into project.user_money (user_name_id,
-                                        user_name,
-                                        user_phone,
-                                        nation,
-                                        rate_name,
-                                        ex_money,
-                                        cur_field_money,
-                                        show_money,
-                                        cur_name_json,
-                                        create_time)
-        values (#{userNameId},
-                #{userName},
-                #{userPhone},
-                #{nation},
-                #{rateName},
-                0,
-                #{curFieldMoney},
-                0,
-                #{curNameJson},
-                #{createTime})
-    </insert>
-
-    <resultMap id="getId" type="com.example.server.model.UserMoney">
-        <id property="userId" column="user_id"/>
-        <id property="userNameId" column="user_name_id"/>
-        <id property="userName" column="user_name"/>
-        <id property="nation" column="nation"/>
-        <id property="rateName" column="rate_name"/>
-        <id property="exMoney" column="ex_money"/>
-        <id property="curFieldMoney" column="cur_field_money"/>
-        <id property="showMoney" column="show_money"/>
-        <id property="curNameJson" column="cur_name_json"/>
-    </resultMap>
-    <select id="getUserMoneyAll" resultMap="getId">
-        select *
-        from project.user_money
-        where user_name like concat('%', #{userName}, '%')
-        order by create_time desc
-    </select>
-
-    <update id="setId" parameterType="com.example.server.model.UserMoney">
-        update project.user_money
-        set user_name_id = #{userNameId}
-        where user_name = #{userName}
-    </update>
-
-    <delete id="delId" parameterType="Long">
-        delete
-        from project.user_money
-        where user_id = #{userId}
-    </delete>
-
-    <select id="getUserMoneyId" resultMap="getId">
-        select user_id,
-               user_name_id,
-               user_name,
-               nation,
-               rate_name,
-               ex_money,
-               cur_field_money,
-               show_money
-        from project.user_money
-        where user_id = #{userId}
-    </select>
-
-    <update id="setUserMoneyId" parameterType="map">
-        update project.user_money x
-        set
-            x.ex_money = #{exMoney},
-            x.show_money = #{showMoney}
-        where x.user_id = #{userId}
-    </update>
-
-    <select id="getAll" resultMap="getId">
-        select *
-        from project.user_money
-        order by create_time desc
-    </select>
-
-
 </mapper>

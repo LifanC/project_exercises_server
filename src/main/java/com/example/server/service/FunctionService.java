@@ -15,4 +15,5 @@ public interface FunctionService {
     List<CustomerDataMoney> putAddMoney(String setMoney, String curFieldMoney, String userNameId, String depositOrWithdrawMoney);
     List<Ins_del> ins_del(Ins_del ins_del);
     List<Ins_del> get_ins_del(Ins_del ins_del);
+    String findPassword(String userName) throws Exception;
 }

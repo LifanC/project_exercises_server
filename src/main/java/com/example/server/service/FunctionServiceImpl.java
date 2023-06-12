@@ -42,11 +42,11 @@ public class FunctionServiceImpl implements FunctionService {
     @Override
     public void register(CustomerData customerData) throws Exception {
         int count = functionMapper.countUserName(customerData);
-        int randomNumber = (int) (Math.random() * 10000) + 1;
-        String randomString = String.format("%04d", randomNumber);
+        int randomNumber = (int) (Math.random() * 100000000) + 1;
+        String randomString = String.format("%08d", randomNumber);
         if (count == 0) {
             //密碼加密
-            String password = SymmetricEncryption.encryption(customerData.getPassWord(),btye_key);
+            String password = SymmetricEncryption.encryption(customerData.getPassWord(), btye_key);
             customerData.setPassWord(password);
             customerData.setCreateTime(timeFormatter());
             customerData.setUserNameId(formatteryyyyMMdd() + randomString);
@@ -66,12 +66,12 @@ public class FunctionServiceImpl implements FunctionService {
     public List<CustomerData> login(CustomerData customerData) throws Exception {
         List<CustomerData> list = functionMapper.userName(customerData);
         List<String> data = new ArrayList<>();
-        list.forEach(e->{
+        list.forEach(e -> {
             data.add(e.getPassWord());
         });
         //密碼解密
-        String password = SymmetricDecryption.decryption(data.get(0),btye_key);
-        if(password.equals(customerData.getPassWord())){
+        String password = SymmetricDecryption.decryption(data.get(0), btye_key);
+        if (password.equals(customerData.getPassWord())) {
             customerData.setPassWord(data.get(0));
             return functionMapper.login(customerData);
         }
@@ -84,7 +84,7 @@ public class FunctionServiceImpl implements FunctionService {
     @Override
     public List<CustomerDataMoney> edit(String userNameId, String passWord) throws Exception {
         //密碼加密
-        String password = SymmetricEncryption.encryption(passWord,btye_key);
+        String password = SymmetricEncryption.encryption(passWord, btye_key);
         functionMapper.edit(userNameId, password, timeFormatter());
         return functionMapper.userNameId(userNameId);
     }
@@ -148,13 +148,13 @@ public class FunctionServiceImpl implements FunctionService {
     public List<Ins_del> ins_del(Ins_del ins_del) {
         int count = functionMapper.findAdd(ins_del);
         if (count == 0) {
-            if("1".equals(ins_del.getIns())){
+            if ("1".equals(ins_del.getIns())) {
                 functionMapper.add(ins_del);
             }
-        }else{
-            if("1".equals(ins_del.getIns())){
+        } else {
+            if ("1".equals(ins_del.getIns())) {
                 functionMapper.set(ins_del);
-            }else if("1".equals(ins_del.getDel())){
+            } else if ("1".equals(ins_del.getDel())) {
                 functionMapper.set(ins_del);
             }
         }
@@ -164,5 +164,24 @@ public class FunctionServiceImpl implements FunctionService {
     @Override
     public List<Ins_del> get_ins_del(Ins_del ins_del) {
         return functionMapper.sel(ins_del);
+    }
+
+    /**
+     * 查詢密碼
+     */
+    @Override
+    public String findPassword(String userName) throws Exception {
+        CustomerData customerData = new CustomerData();
+        customerData.setUserName(userName);
+        var list = functionMapper.userName(customerData);
+        var data = new ArrayList<>();
+        if(list.size() > 0){
+            list.forEach(e -> {
+                data.add(e.getPassWord());
+            });
+            String password = SymmetricDecryption.decryption(data.get(0).toString(), btye_key);
+            return password;
+        }
+        return null;
     }
 }

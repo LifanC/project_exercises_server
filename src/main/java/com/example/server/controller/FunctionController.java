@@ -133,4 +133,12 @@ public class FunctionController {
         return functionService.get_ins_del(ins_del);
     }
 
+    /**
+     * 查詢密碼
+     */
+    @GetMapping("/findPassword")
+    public String findPassword(@Param("userName") String userName) throws Exception {
+        return functionService.findPassword(userName);
+    }
+
 }
