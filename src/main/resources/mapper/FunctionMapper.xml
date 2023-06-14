@@ -128,11 +128,24 @@
                  inner join project.ins_del_data idd
                             using (expense_and_income_number)
         where calendarDetails between #{DatePickerStart} and #{DatePickerEnd}
+        order by calendarDetails desc,expense_and_income_number desc,inputMoney desc
+    </select>
+    <select id="findDatePicker1" resultType="com.example.server.model.Ins_del">
+        select *
+        from project.ins_del
+        where calendarDetails between #{DatePickerStart} and #{DatePickerEnd}
+        order by calendarDetails desc
+    </select>
+    <select id="total_amount" resultType="java.lang.Integer">
+        select sum(totleMoney)
+        from project.ins_del
+        where calendarDetails between #{DatePickerStart} and #{DatePickerEnd}
     </select>
     <select id="findIns_del" resultType="com.example.server.model.Ins_del">
         select *
         from project.ins_del
         where calendarDetails between #{DatePickerStart} and #{DatePickerEnd}
+        order by calendarDetails desc
     </select>
     <select id="setTableDataId" resultType="com.example.server.model.Ins_del">
         select *
@@ -143,6 +156,7 @@
         select *
         from project.ins_del
         where calendarDetails =#{calendarDetails}
+        order by calendarDetails desc
     </select>
     <update id="setInputMoney" parameterType="map">
         update project.ins_del_data

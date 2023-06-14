@@ -47,6 +47,8 @@ public interface FunctionMapper {
     void addIns_DelData(Ins_del ins_del);
 
     List<Ins_del> findDatePicker(String DatePickerStart, String DatePickerEnd);
+    List<Ins_del> findDatePicker1(String DatePickerStart, String DatePickerEnd);
+    int total_amount(String DatePickerStart, String DatePickerEnd);
     List<Ins_del> findIns_del(String DatePickerStart, String DatePickerEnd);
     List<Ins_del> setTableDataId(Long ins_del_data_id);
     List<Ins_del> fins_ins_del_id(String calendarDetails);

@@ -154,6 +154,22 @@ public class FunctionController {
         return functionService.findDatePicker(DatePickerStart, DatePickerEnd);
     }
 
+    @GetMapping("/findDatePicker1")
+    public List<Ins_del> findDatePicker1(
+            @Param("DatePickerStart") String DatePickerStart,
+            @Param("DatePickerEnd") String DatePickerEnd
+    ) {
+        return functionService.findDatePicker1(DatePickerStart, DatePickerEnd);
+    }
+
+    @GetMapping("/total_amount")
+    public Integer total_amount(
+            @Param("DatePickerStart") String DatePickerStart,
+            @Param("DatePickerEnd") String DatePickerEnd
+    ) {
+        return functionService.total_amount(DatePickerStart, DatePickerEnd);
+    }
+
     @GetMapping("/findIns_del")
     public List<Ins_del> findIns_del(
             @Param("DatePickerStart") String DatePickerStart,
@@ -163,8 +179,8 @@ public class FunctionController {
     }
 
     @PostMapping("/setTableData")
-    public List<Ins_del> setTableData(@RequestBody Ins_del ins_del) {
-        return functionService.setTableData(
+    public void setTableData(@RequestBody Ins_del ins_del) {
+        functionService.setTableData(
                 ins_del.getIns_del_data_id(),
                 ins_del.getExpense_and_income_number(),
                 ins_del.getInputMoney(),

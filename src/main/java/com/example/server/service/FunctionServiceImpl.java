@@ -239,12 +239,22 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
+    public List<Ins_del> findDatePicker1(String DatePickerStart, String DatePickerEnd) {
+        return functionMapper.findDatePicker1(DatePickerStart, DatePickerEnd);
+    }
+
+    @Override
+    public Integer total_amount(String DatePickerStart, String DatePickerEnd) {
+        return functionMapper.total_amount(DatePickerStart, DatePickerEnd);
+    }
+
+    @Override
     public List<Ins_del> findIns_del(String DatePickerStart, String DatePickerEnd) {
         return functionMapper.findIns_del(DatePickerStart, DatePickerEnd);
     }
 
     @Override
-    public List<Ins_del> setTableData(Long ins_del_data_id, String expense_and_income_number, Integer inputMoney, Integer setInputMoney, String calendarDetails) {
+    public void setTableData(Long ins_del_data_id, String expense_and_income_number, Integer inputMoney, Integer setInputMoney, String calendarDetails) {
         Map map = new HashMap();
         var list = functionMapper.setTableDataId(ins_del_data_id);
         list.forEach(a -> {
@@ -265,7 +275,7 @@ public class FunctionServiceImpl implements FunctionService {
                     map2.put("ins_del_id", b.getIns_del_id());
                     break;
                 case "B":
-                    map2.put("income", b.getExpense() - z);
+                    map2.put("income", b.getIncome() - z);
                     map2.put("ins_del_id", b.getIns_del_id());
                     break;
             }
@@ -276,9 +286,7 @@ public class FunctionServiceImpl implements FunctionService {
             map4.put("totleMoney",c.getTotleMoney());
             map4.put("ins_del_id",c.getIns_del_id());
         });
-
         functionMapper.setTotleMoneyId(map4);
-        return functionMapper.fins_ins_del_id(calendarDetails);
     }
 
 }

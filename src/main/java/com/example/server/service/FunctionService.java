@@ -17,6 +17,8 @@ public interface FunctionService {
     List<Ins_del> get_ins_del(Ins_del ins_del);
     String findPassword(String userName) throws Exception;
     List<Ins_del> findDatePicker(String DatePickerStart, String DatePickerEnd);
+    List<Ins_del> findDatePicker1(String DatePickerStart, String DatePickerEnd);
+    Integer total_amount(String DatePickerStart, String DatePickerEnd);
     List<Ins_del> findIns_del(String DatePickerStart, String DatePickerEnd);
-    List<Ins_del> setTableData(Long ins_del_data_id,String expense_and_income_number,Integer inputMoney,Integer setInputMoney,String calendarDetails);
+    void setTableData(Long ins_del_data_id,String expense_and_income_number,Integer inputMoney,Integer setInputMoney,String calendarDetails);
 }
