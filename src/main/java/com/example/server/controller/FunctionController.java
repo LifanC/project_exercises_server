@@ -123,22 +123,54 @@ public class FunctionController {
         return functionService.putAddMoney(setMoney, curFieldMoney, userNameId, depositOrWithdrawMoney);
     }
 
-    @PostMapping("/ins_del")
-    public List<Ins_del> ins_del(@RequestBody Ins_del ins_del){
-        return functionService.ins_del(ins_del);
-    }
-
-    @GetMapping("/get_ins_del")
-    public List<Ins_del> get_ins_del(Ins_del ins_del){
-        return functionService.get_ins_del(ins_del);
-    }
-
     /**
      * 查詢密碼
      */
     @GetMapping("/findPassword")
     public String findPassword(@Param("userName") String userName) throws Exception {
         return functionService.findPassword(userName);
+    }
+
+
+    //Index
+    @PostMapping("/ins_del")
+    public List<Ins_del> ins_del(@RequestBody Ins_del ins_del) {
+        return functionService.ins_del(ins_del);
+    }
+
+    /**
+     * 顯示資料
+     */
+    @GetMapping("/get_ins_del")
+    public List<Ins_del> get_ins_del(Ins_del ins_del) {
+        return functionService.get_ins_del(ins_del);
+    }
+
+    @GetMapping("/findDatePicker")
+    public List<Ins_del> findDatePicker(
+            @Param("DatePickerStart") String DatePickerStart,
+            @Param("DatePickerEnd") String DatePickerEnd
+    ) {
+        return functionService.findDatePicker(DatePickerStart, DatePickerEnd);
+    }
+
+    @GetMapping("/findIns_del")
+    public List<Ins_del> findIns_del(
+            @Param("DatePickerStart") String DatePickerStart,
+            @Param("DatePickerEnd") String DatePickerEnd
+    ) {
+        return functionService.findIns_del(DatePickerStart, DatePickerEnd);
+    }
+
+    @PostMapping("/setTableData")
+    public List<Ins_del> setTableData(@RequestBody Ins_del ins_del) {
+        return functionService.setTableData(
+                ins_del.getIns_del_data_id(),
+                ins_del.getExpense_and_income_number(),
+                ins_del.getInputMoney(),
+                ins_del.getSetInputMoney(),
+                ins_del.getCalendarDetails()
+        );
     }
 
 }

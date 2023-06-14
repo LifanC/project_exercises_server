@@ -79,17 +79,24 @@
         where x.user_name_id = #{user_name_id}
     </update>
     <insert id="add" parameterType="com.example.server.model.Ins_del">
-        insert into project.ins_del (calendarDetails, ex)
-        values (#{calendarDetails}, #{ex})
+        insert into project.ins_del (calendarDetails, ex, expense, income)
+        values (#{calendarDetails}, #{ex}, #{expense}, #{income})
     </insert>
     <select id="findAdd" resultType="java.lang.Integer">
         select count(0)
         from project.ins_del
         where calendarDetails = #{calendarDetails}
     </select>
+    <select id="findTotleMoney" resultType="com.example.server.model.Ins_del">
+        select calendarDetails, income - expense as totleMoney
+        from project.ins_del
+        where calendarDetails = #{calendarDetails}
+    </select>
     <update id="set" parameterType="com.example.server.model.Ins_del">
         update project.ins_del
-        set ex = #{ex}
+        set ex     = #{ex},
+            expense=#{expense},
+            income=#{income}
         where calendarDetails = #{calendarDetails}
     </update>
     <select id="sel" resultType="com.example.server.model.Ins_del">
@@ -97,5 +104,68 @@
         from project.ins_del
         where calendarDetails = #{calendarDetails}
     </select>
+    <update id="setTotle" parameterType="map">
+        update project.ins_del
+        set totleMoney=#{totleMoney}
+        where calendarDetails = #{calendarDetails}
+    </update>
+    <update id="setSecond" parameterType="map">
+        update project.ins_del
+        <set>
+            ex=#{ex},
+            <if test="expense != 0">expense=#{expense},</if>
+            <if test="income != 0">income=#{income},</if>
+        </set>
+        where calendarDetails = #{calendarDetails}
+    </update>
+    <insert id="addIns_DelData" parameterType="com.example.server.model.Ins_del">
+        insert into project.ins_del_data (calendarDetails, expense_and_income_number, inputMoney, details)
+        values (#{calendarDetails}, #{expense_and_income_number}, #{inputMoney}, #{details})
+    </insert>
+    <select id="findDatePicker" resultType="com.example.server.model.Ins_del">
+        select *
+        from project.ins_del_data_expense_and_income_name iddeain
+                 inner join project.ins_del_data idd
+                            using (expense_and_income_number)
+        where calendarDetails between #{DatePickerStart} and #{DatePickerEnd}
+    </select>
+    <select id="findIns_del" resultType="com.example.server.model.Ins_del">
+        select *
+        from project.ins_del
+        where calendarDetails between #{DatePickerStart} and #{DatePickerEnd}
+    </select>
+    <select id="setTableDataId" resultType="com.example.server.model.Ins_del">
+        select *
+        from project.ins_del_data
+        where ins_del_data_id =#{ins_del_data_id}
+    </select>
+    <select id="fins_ins_del_id" resultType="com.example.server.model.Ins_del">
+        select *
+        from project.ins_del
+        where calendarDetails =#{calendarDetails}
+    </select>
+    <update id="setInputMoney" parameterType="map">
+        update project.ins_del_data
+        set inputMoney = #{inputMoney}
+        where ins_del_data_id = #{ins_del_data_id}
+    </update>
+    <update id="setIns_del" parameterType="map">
+        update project.ins_del
+        <set>
+            <if test="expense != null">expense=#{expense},</if>
+            <if test="income != null">income=#{income},</if>
+        </set>
+        where ins_del_id = #{ins_del_id}
+    </update>
+    <select id="findTotleMoneyId" resultType="com.example.server.model.Ins_del">
+        select ins_del_id, income - expense as totleMoney
+        from project.ins_del
+        where ins_del_id = #{ins_del_id}
+    </select>
+    <update id="setTotleMoneyId" parameterType="map">
+        update project.ins_del
+        set totleMoney=#{totleMoney}
+        where ins_del_id = #{ins_del_id}
+    </update>
 
 </mapper>
