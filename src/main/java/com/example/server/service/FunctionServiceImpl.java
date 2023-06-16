@@ -25,15 +25,13 @@ public class FunctionServiceImpl implements FunctionService {
     public String timeFormatter() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd hh:mm");
         LocalDateTime date = LocalDateTime.now();
-        String formattedDate = date.format(formatter);
-        return formattedDate;
+        return date.format(formatter);
     }
 
     public String formatteryyyyMMdd() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDateTime date = LocalDateTime.now();
-        String formattedDate = date.format(formatter);
-        return formattedDate;
+        return date.format(formatter);
     }
 
     /**
@@ -79,6 +77,24 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     /**
+     * 查詢密碼
+     */
+    @Override
+    public String findPassword(String userName) throws Exception {
+        CustomerData customerData = new CustomerData();
+        customerData.setUserName(userName);
+        var list = functionMapper.userName(customerData);
+        var data = new ArrayList<>();
+        if (list.size() > 0) {
+            list.forEach(e -> {
+                data.add(e.getPassWord());
+            });
+            return SymmetricDecryption.decryption(data.get(0).toString(), btye_key);
+        }
+        return null;
+    }
+
+    /**
      * 修改
      */
     @Override
@@ -106,7 +122,7 @@ public class FunctionServiceImpl implements FunctionService {
     @Override
     public List<CustomerDataMoney> putAddMoney(String setMoney, String curFieldMoney, String userNameId, String depositOrWithdrawMoney) {
         List<CustomerDataMoney> data = functionMapper.userNameId(userNameId);
-        Map map = new HashMap<>();
+        Map<Object, Object> map = new HashMap<>();
         if ("depositMoney".equals(depositOrWithdrawMoney)) {
             data.forEach(z -> {
                 BigDecimal depositNew = new BigDecimal(setMoney);
@@ -144,67 +160,72 @@ public class FunctionServiceImpl implements FunctionService {
         return functionMapper.userNameId(userNameId);
     }
 
+    //index
     @Override
     public List<Ins_del> ins_del(Ins_del ins_del) {
-        if (!"".equals(ins_del.getDetails())) {
-            functionMapper.addIns_DelData(ins_del);
-        }
-        int count = functionMapper.findAdd(ins_del);
-        Map map = new HashMap<>();
-        if (count == 0) {
-            if ("1".equals(ins_del.getIns())) {
-                switch (ins_del.getExpense_and_income_number()) {
-                    case "A":
-                        ins_del.setExpense(ins_del.getInputMoney());
-                        ins_del.setIncome(0);
-                        break;
-                    case "B":
-                        ins_del.setIncome(ins_del.getInputMoney());
-                        ins_del.setExpense(0);
-                        break;
-                }
-                functionMapper.add(ins_del);
-                var list = functionMapper.findTotleMoney(ins_del);
-                list.forEach(a -> {
-                    ins_del.setTotleMoney(a.getTotleMoney());
-                    map.put("calendarDetails", ins_del.getCalendarDetails());
-                    map.put("totleMoney", a.getTotleMoney());
-                });
-                functionMapper.setTotle(map);
-            }
-        } else {
-            if ("1".equals(ins_del.getIns())) {
-                var setSecond = functionMapper.sel(ins_del);
-                Integer expenseNumber = 0;
-                Integer incomeNumber = 0;
-                switch (ins_del.getExpense_and_income_number()) {
-                    case "A":
-                        for (Ins_del V : setSecond) {
-                            expenseNumber = V.getExpense() + ins_del.getInputMoney();
+        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> mapMoney = new HashMap<>();
+        switch (ins_del.getInsDel()) {
+            case "1":
+                int count = functionMapper.findAdd(ins_del);
+                if (count == 0 & !"".equals(ins_del.getEx())) {
+                    switch (ins_del.getExpense_and_income_number()) {
+                        case "A" -> {
+                            ins_del.setExpense(ins_del.getInputMoney());
+                            ins_del.setIncome(0);
                         }
-                        break;
-                    case "B":
-                        for (Ins_del V : setSecond) {
-                            incomeNumber = V.getIncome() + ins_del.getInputMoney();
+                        case "B" -> {
+                            ins_del.setIncome(ins_del.getInputMoney());
+                            ins_del.setExpense(0);
                         }
-                        break;
+                    }
+                    functionMapper.add(ins_del);
+                    var list = functionMapper.findTotleMoney(ins_del);
+                    list.forEach(a -> {
+                        ins_del.setTotleMoney(a.getTotleMoney());
+                        map.put("calendarDetails", ins_del.getCalendarDetails());
+                        map.put("totleMoney", a.getTotleMoney());
+                    });
+                    functionMapper.setTotle(map);
+                    if (!"".equals(ins_del.getDetails())) {
+                        functionMapper.addIns_DelData(ins_del);
+                    }
+                } else if (count > 0) {
+                    int expenseNumber = 0;
+                    int incomeNumber = 0;
+                    var setSecond = functionMapper.sel(ins_del);
+                    switch (ins_del.getExpense_and_income_number()) {
+                        case "A" -> {
+                            for (Ins_del V : setSecond) {
+                                expenseNumber = V.getExpense() + ins_del.getInputMoney();
+                            }
+                        }
+                        case "B" -> {
+                            for (Ins_del V : setSecond) {
+                                incomeNumber = V.getIncome() + ins_del.getInputMoney();
+                            }
+                        }
+                    }
+                    mapMoney.put("calendarDetails", ins_del.getCalendarDetails());
+                    mapMoney.put("expense", expenseNumber);
+                    mapMoney.put("income", incomeNumber);
+                    mapMoney.put("ex", ins_del.getEx());
+                    functionMapper.setSecond(mapMoney);
+                    var list = functionMapper.findTotleMoney(ins_del);
+                    list.forEach(a -> {
+                        ins_del.setTotleMoney(a.getTotleMoney());
+                        map.put("calendarDetails", ins_del.getCalendarDetails());
+                        map.put("totleMoney", a.getTotleMoney());
+                    });
+                    functionMapper.setTotle(map);
+                    if (!"".equals(ins_del.getDetails())) {
+                        functionMapper.addIns_DelData(ins_del);
+                    }
                 }
-                Map mapMoney = new HashMap<>();
-                mapMoney.put("calendarDetails", ins_del.getCalendarDetails());
-                mapMoney.put("expense", expenseNumber);
-                mapMoney.put("income", incomeNumber);
-                mapMoney.put("ex", ins_del.getEx());
-                functionMapper.setSecond(mapMoney);
-                var list = functionMapper.findTotleMoney(ins_del);
-                list.forEach(a -> {
-                    ins_del.setTotleMoney(a.getTotleMoney());
-                    map.put("calendarDetails", ins_del.getCalendarDetails());
-                    map.put("totleMoney", a.getTotleMoney());
-                });
-                functionMapper.setTotle(map);
-            } else if ("1".equals(ins_del.getDel())) {
+                break;
+            case "2":
                 functionMapper.set(ins_del);
-            }
+                break;
         }
         return functionMapper.sel(ins_del);
     }
@@ -212,25 +233,6 @@ public class FunctionServiceImpl implements FunctionService {
     @Override
     public List<Ins_del> get_ins_del(Ins_del ins_del) {
         return functionMapper.sel(ins_del);
-    }
-
-    /**
-     * 查詢密碼
-     */
-    @Override
-    public String findPassword(String userName) throws Exception {
-        CustomerData customerData = new CustomerData();
-        customerData.setUserName(userName);
-        var list = functionMapper.userName(customerData);
-        var data = new ArrayList<>();
-        if (list.size() > 0) {
-            list.forEach(e -> {
-                data.add(e.getPassWord());
-            });
-            String password = SymmetricDecryption.decryption(data.get(0).toString(), btye_key);
-            return password;
-        }
-        return null;
     }
 
     @Override
@@ -245,7 +247,11 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Override
     public Integer total_amount(String DatePickerStart, String DatePickerEnd) {
-        return functionMapper.total_amount(DatePickerStart, DatePickerEnd);
+        List<Ins_del> list = functionMapper.findDatePicker1(DatePickerStart, DatePickerEnd);
+        if (list.size() != 0) {
+            return functionMapper.total_amount(DatePickerStart, DatePickerEnd);
+        }
+        return 0;
     }
 
     @Override
@@ -254,37 +260,38 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
-    public void setTableData(Long ins_del_data_id, String expense_and_income_number, Integer inputMoney, Integer setInputMoney, String calendarDetails) {
-        Map map = new HashMap();
+    public void setTableData(Long ins_del_data_id, String expense_and_income_number, Integer inputMoney, Integer
+            setInputMoney, String calendarDetails) {
+        Map<String, Object> map = new HashMap<>();
         var list = functionMapper.setTableDataId(ins_del_data_id);
         list.forEach(a -> {
             map.put("inputMoney", setInputMoney);
             map.put("ins_del_data_id", ins_del_data_id);
         });
         functionMapper.setInputMoney(map);
-        Map map2 = new HashMap();
-        Map map3 = new HashMap();
-        Map map4 = new HashMap();
+        Map<String, Object> map2 = new HashMap<>();
+        Map<String, Object> map3 = new HashMap<>();
+        Map<String, Object> map4 = new HashMap<>();
         var list2 = functionMapper.fins_ins_del_id(calendarDetails);
         Integer z = inputMoney - setInputMoney;
         list2.forEach(b -> {
             map3.put("ins_del_id", b.getIns_del_id());
             switch (expense_and_income_number) {
-                case "A":
+                case "A" -> {
                     map2.put("expense", b.getExpense() - z);
                     map2.put("ins_del_id", b.getIns_del_id());
-                    break;
-                case "B":
+                }
+                case "B" -> {
                     map2.put("income", b.getIncome() - z);
                     map2.put("ins_del_id", b.getIns_del_id());
-                    break;
+                }
             }
         });
         functionMapper.setIns_del(map2);
         List<Ins_del> list3 = functionMapper.findTotleMoneyId(map3);
         list3.forEach(c -> {
-            map4.put("totleMoney",c.getTotleMoney());
-            map4.put("ins_del_id",c.getIns_del_id());
+            map4.put("totleMoney", c.getTotleMoney());
+            map4.put("ins_del_id", c.getIns_del_id());
         });
         functionMapper.setTotleMoneyId(map4);
     }

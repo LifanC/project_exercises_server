@@ -12,8 +12,7 @@ public class Ins_del {
     private Long ins_del_data_id;
     private String calendarDetails;
     private String ex;
-    private String ins;
-    private String del;
+    private String insDel;
     private Integer expense;
     private Integer income;
     private String expense_and_income_number;

@@ -78,6 +78,9 @@
             x.update_time = #{update_time}
         where x.user_name_id = #{user_name_id}
     </update>
+
+<!--    Index-->
+
     <insert id="add" parameterType="com.example.server.model.Ins_del">
         insert into project.ins_del (calendarDetails, ex, expense, income)
         values (#{calendarDetails}, #{ex}, #{expense}, #{income})
@@ -94,9 +97,11 @@
     </select>
     <update id="set" parameterType="com.example.server.model.Ins_del">
         update project.ins_del
-        set ex     = #{ex},
-            expense=#{expense},
-            income=#{income}
+        <set>
+            ex=#{ex},
+            <if test="expense != null">expense=#{expense},</if>
+            <if test="income != null">income=#{income},</if>
+        </set>
         where calendarDetails = #{calendarDetails}
     </update>
     <select id="sel" resultType="com.example.server.model.Ins_del">
