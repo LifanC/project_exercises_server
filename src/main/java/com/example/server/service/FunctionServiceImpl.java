@@ -296,4 +296,37 @@ public class FunctionServiceImpl implements FunctionService {
         functionMapper.setTotleMoneyId(map4);
     }
 
+    @Override
+    public void del(Ins_del ins_del) {
+        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map3 = new HashMap<>();
+        Map<String, Object> map4 = new HashMap<>();
+        var list = functionMapper.sel(ins_del);
+        switch (ins_del.getExpense_and_income_number()) {
+            case "A" -> {
+                list.forEach(b -> {
+                    map.put("calendarDetails", ins_del.getCalendarDetails());
+                    map.put("expense", b.getExpense() - ins_del.getInputMoney());
+                    map.put("income", null);
+                });
+            }
+            case "B" -> {
+                list.forEach(b -> {
+                    map.put("calendarDetails", ins_del.getCalendarDetails());
+                    map.put("income", b.getIncome() - ins_del.getInputMoney());
+                    map.put("expense", null);
+                });
+            }
+        }
+        functionMapper.set2(map);
+        map3.put("calendarDetails",ins_del.getCalendarDetails());
+        List<Ins_del> list3 = functionMapper.findId(map3);
+        list3.forEach(c -> {
+            map4.put("totleMoney", c.getTotleMoney());
+            map4.put("ins_del_id", c.getIns_del_id());
+        });
+        functionMapper.setTotleMoneyId(map4);
+        functionMapper.del(ins_del.getIns_del_data_id());
+    }
+
 }

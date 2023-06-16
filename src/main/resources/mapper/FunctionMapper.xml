@@ -117,7 +117,7 @@
     <update id="setSecond" parameterType="map">
         update project.ins_del
         <set>
-            ex=#{ex},
+            <if test="ex != null">ex=#{ex},</if>
             <if test="expense != 0">expense=#{expense},</if>
             <if test="income != 0">income=#{income},</if>
         </set>
@@ -186,5 +186,24 @@
         set totleMoney=#{totleMoney}
         where ins_del_id = #{ins_del_id}
     </update>
+    <delete id="del" parameterType="long">
+        delete
+        from project.ins_del_data
+        where ins_del_data_id = #{ins_del_data_id}
+    </delete>
+    <update id="set2" parameterType="map">
+        update project.ins_del
+        <set>
+            <if test="expense != null">expense=#{expense},</if>
+            <if test="income != null">income=#{income},</if>
+        </set>
+        where calendarDetails = #{calendarDetails}
+    </update>
+    <select id="findId" resultType="com.example.server.model.Ins_del">
+        select ins_del_id, income - expense as totleMoney
+        from project.ins_del
+        where calendarDetails = #{calendarDetails}
+    </select>
+
 
 </mapper>

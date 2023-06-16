@@ -21,4 +21,5 @@ public interface FunctionService {
     Integer total_amount(String DatePickerStart, String DatePickerEnd);
     List<Ins_del> findIns_del(String DatePickerStart, String DatePickerEnd);
     void setTableData(Long ins_del_data_id,String expense_and_income_number,Integer inputMoney,Integer setInputMoney,String calendarDetails);
+    void del(Ins_del ins_del);
 }

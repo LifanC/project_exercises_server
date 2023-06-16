@@ -56,4 +56,8 @@ public interface FunctionMapper {
     void setIns_del(Map map2);
     List<Ins_del> findTotleMoneyId(Map map3);
     void setTotleMoneyId(Map map4);
+    void del(Long ins_del_data_id);
+    void set2(Map map);
+    List<Ins_del> findId(Map map3);
+
 }

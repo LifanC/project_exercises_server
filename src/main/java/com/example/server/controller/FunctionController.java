@@ -189,4 +189,9 @@ public class FunctionController {
         );
     }
 
+    @DeleteMapping("del")
+    public void del(@RequestBody Ins_del ins_del){
+        functionService.del(ins_del);
+    }
+
 }
