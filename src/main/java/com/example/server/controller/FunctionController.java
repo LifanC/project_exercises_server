@@ -75,6 +75,7 @@ public class FunctionController {
     public List<String> sign_out() throws Exception {
         redisTemplate.delete("userName");
         redisTemplate.delete("userNameId");
+        redisTemplate.delete("map");
         List<String> list = new ArrayList<>();
         list.add("未登入");
         list.add("");
