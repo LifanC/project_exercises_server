@@ -90,9 +90,10 @@ public class JavaServiceImpl implements JavaService {
         a.start(); // a執行緒先執行
         List<String> elements = redisTemplate.opsForList().range("list", 0, -1);
         List<String> filter = new ArrayList<>();
-        for (int i = 0; i < elements.size(); i++) {
-            if(request.getA().equals(elements.get(i))){
-                filter.add(elements.get(i));
+        assert elements != null;
+        for (String element : elements) {
+            if (request.getA().equals(element)) {
+                filter.add(element);
             }
         }
         return filter;
@@ -108,9 +109,10 @@ public class JavaServiceImpl implements JavaService {
         b.start(); // b執行緒再接著執行
         List<String> elements = redisTemplate.opsForList().range("list", 0, -1);
         List<String> filter = new ArrayList<>();
-        for (int i = 0; i < elements.size(); i++) {
-            if(request.getB().equals(elements.get(i))){
-                filter.add(elements.get(i));
+        assert elements != null;
+        for (String element : elements) {
+            if (request.getB().equals(element)) {
+                filter.add(element);
             }
         }
         return filter;
@@ -121,8 +123,7 @@ public class JavaServiceImpl implements JavaService {
         ThreadC c = new ThreadC();
         c.start(); // c執行緒再接著執行
         c.join(); // 等c執行緒結束
-        List<String> elements = redisTemplate.opsForList().range("list", 0, -1);
-        return elements;
+        return redisTemplate.opsForList().range("list", 0, -1);
     }
 
     @Override
@@ -131,8 +132,7 @@ public class JavaServiceImpl implements JavaService {
         d.start(); // d執行緒再接著執行
         d.join(); // 等d執行緒結束
         redisTemplate.delete("list");
-        List<String> elements = redisTemplate.opsForList().range("list", 0, -1);
-        return elements;
+        return redisTemplate.opsForList().range("list", 0, -1);
     }
 
 
