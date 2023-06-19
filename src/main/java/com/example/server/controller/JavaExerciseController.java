@@ -31,8 +31,8 @@ public class JavaExerciseController {
     }
 
     @GetMapping("/D")
-    public List<String> D() throws InterruptedException {
-        return javaService.D();
+    public void D() throws InterruptedException {
+        javaService.D();
     }
 
 }

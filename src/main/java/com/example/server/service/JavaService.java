@@ -9,5 +9,5 @@ public interface JavaService {
     List<String> A(MyRequest request);
     List<String> B(MyRequest request);
     List<String> C() throws InterruptedException;
-    List<String> D() throws InterruptedException;
+    void D() throws InterruptedException;
 }
