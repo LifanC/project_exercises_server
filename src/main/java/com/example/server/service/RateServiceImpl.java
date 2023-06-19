@@ -19,7 +19,7 @@ public class RateServiceImpl implements RateService {
     private RateExMapper rateExMapper;
 
     public String timeFormatter() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd hh:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
         LocalDateTime date = LocalDateTime.now();
         String formattedDate = date.format(formatter);
         return formattedDate;

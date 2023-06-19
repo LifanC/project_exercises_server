@@ -23,7 +23,7 @@ public class FunctionServiceImpl implements FunctionService {
     private final String btye_key = "0123456789abcdef";
 
     public String timeFormatter() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd hh:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
         LocalDateTime date = LocalDateTime.now();
         return date.format(formatter);
     }

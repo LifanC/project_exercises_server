@@ -23,13 +23,18 @@ public class UbikeServiceImpl implements UbikeService {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DATE,-1);
-        switch (TorY){
-            case "Today":
-                return strDate.format(date);
-            case "Yesterday":
-                return strDate.format(calendar.getTime());
-        }
-        return null;
+//        1.
+//        switch (TorY){
+//            case "Today":
+//                return strDate.format(date);
+//            case "Yesterday":
+//                return strDate.format(calendar.getTime());
+//        }
+        return switch (TorY) {
+            case "Today" -> strDate.format(date);
+            case "Yesterday" -> strDate.format(calendar.getTime());
+            default -> null;
+        };
     }
 
     @Override

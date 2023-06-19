@@ -30,7 +30,7 @@ public class GodServiceImpl implements GodService {
 
     @Override
     public List<God> getTenGodData(String name, String chatper, Long skip) {
-        Map map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("name", name);
         map.put("chatper", chatper);
         map.put("skip", skip);
@@ -40,29 +40,39 @@ public class GodServiceImpl implements GodService {
     @Override
     public List<God> tableArr() {
         int count = godMapper.getAllCount();
-        Integer arrA = (int) (Math.random() * count) + 1;
-        Integer arrB = (int) (Math.random() * count) + 1;
-        Integer arrC = (int) (Math.random() * count) + 1;
-        Integer arrD = (int) (Math.random() * count) + 1;
-        Integer arrE = (int) (Math.random() * count) + 1;
-        Integer arrF = (int) (Math.random() * count) + 1;
-        List<Long> dataCount = new ArrayList<>();
-        dataCount.add(Long.valueOf(arrA));
-        dataCount.add(Long.valueOf(arrB));
-        dataCount.add(Long.valueOf(arrC));
-        dataCount.add(Long.valueOf(arrD));
-        dataCount.add(Long.valueOf(arrE));
-        dataCount.add(Long.valueOf(arrF));
+        int arrA = (int) (Math.random() * count) + 1;
+        int arrB = (int) (Math.random() * count) + 1;
+        int arrC = (int) (Math.random() * count) + 1;
+        int arrD = (int) (Math.random() * count) + 1;
+        int arrE = (int) (Math.random() * count) + 1;
+        int arrF = (int) (Math.random() * count) + 1;
+        List<Integer> dataCount = new ArrayList<>();
+        dataCount.add(arrA);
+        dataCount.add(arrB);
+        dataCount.add(arrC);
+        dataCount.add(arrD);
+        dataCount.add(arrE);
+        dataCount.add(arrF);
         List<List<God>> data = new ArrayList<>();
         List<God> datav = new ArrayList<>();
-        for (int i = 0; i < dataCount.size(); i++) {
-            data.add(godMapper.getId(dataCount.get(i)));
-        }
-        data.forEach(e->{
-            e.forEach(a->{
-                datav.add(a);
-            });
-        });
+//        1.
+//        for (Integer integer : dataCount) {
+//            data.add(godMapper.getId(Long.valueOf(integer)));
+//        }
+        dataCount.forEach(e -> data.add(godMapper.getId(Long.valueOf(e))));
+//        1.
+//        data.forEach(e->{
+//            e.forEach(a->{
+//                datav.add(a);
+//            });
+//        });
+//        2.
+//        data.forEach(e->{
+//            datav.addAll(e);
+//        });
+//        3.
+//        data.forEach(datav::addAll);
+        data.forEach(datav::addAll);
         return datav;
     }
 

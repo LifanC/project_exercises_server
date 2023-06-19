@@ -34,7 +34,7 @@ public class ToeicServiceImpl implements ToeicService {
 
     @Override
     public List<Toeic> toeicFromSubmitEx(String example, String explain) {
-        Map map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("toeicId", randomNum);
         map.put("example", example);
         map.put("explain", explain);
@@ -44,7 +44,7 @@ public class ToeicServiceImpl implements ToeicService {
 
     @Override
     public List<Toeic> setData(String toeicId, String dialogEnglish, String dialogChinese, String dialogExample, String dialogExplain) {
-        Map map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("toeicId", Long.valueOf(toeicId));
         map.put("english", dialogEnglish);
         map.put("chinese", dialogChinese);
