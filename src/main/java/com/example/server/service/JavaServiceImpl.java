@@ -3,6 +3,7 @@ package com.example.server.service;
 import com.example.server.model.MyRequest;
 import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,12 @@ public class JavaServiceImpl implements JavaService {
         }
     }
 
+    static class ThreadA_show extends Thread {
+        public void run() {
+            Lock.obj.a_show();
+        }
+    }
+
     static class ThreadB extends Thread {
         public void run() {
             try {
@@ -39,6 +46,12 @@ public class JavaServiceImpl implements JavaService {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    static class ThreadB_show extends Thread {
+        public void run() {
+            Lock.obj.b_show();
         }
     }
 
@@ -61,8 +74,16 @@ public class JavaServiceImpl implements JavaService {
             wait();
         }
 
+        public synchronized void a_show() {
+            notifyAll();
+        }
+
         public synchronized void b() throws InterruptedException {
             wait();
+        }
+
+        public synchronized void b_show() {
+            notifyAll();
         }
 
         public synchronized void c() {
@@ -76,24 +97,42 @@ public class JavaServiceImpl implements JavaService {
     }
 
     @Override
-    public List<String> A(MyRequest request) {
+    public void A(MyRequest request) throws InterruptedException {
         setSerializer();
-        if (!"".equals(request.getA())) {
-            redisTemplate.opsForList().rightPush("listA", request.getA());
-        }
         ThreadA a = new ThreadA();
         a.start(); // a執行緒先執行
+        a.join(); // 等a執行緒結束
+        if (request.getA().length != 0) {
+            redisTemplate.opsForList().rightPushAll("listA", request.getA());
+        }
+    }
+
+    @Override
+    public List<String> A_show() throws InterruptedException {
+        setSerializer();
+        ThreadA_show a_show = new ThreadA_show();
+        a_show.start();
+        a_show.join();
         return redisTemplate.opsForList().range("listA", 0, -1);
     }
 
     @Override
-    public List<String> B(MyRequest request) {
+    public void B(MyRequest request) throws InterruptedException {
         setSerializer();
-        if (!"".equals(request.getB())) {
-            redisTemplate.opsForList().rightPush("listB", request.getB());
-        }
         ThreadB b = new ThreadB();
-        b.start(); // b執行緒再接著執行
+        b.start(); // b執行緒先執行
+        b.join(); // 等b執行緒結束
+        if (request.getB().length != 0) {
+            redisTemplate.opsForList().rightPushAll("listB", request.getB());
+        }
+    }
+
+    @Override
+    public List<String> B_show() throws InterruptedException {
+        setSerializer();
+        ThreadB_show b_show = new ThreadB_show();
+        b_show.start();
+        b_show.join();
         return redisTemplate.opsForList().range("listB", 0, -1);
     }
 
@@ -102,13 +141,13 @@ public class JavaServiceImpl implements JavaService {
         ThreadC c = new ThreadC();
         c.start(); // c執行緒再接著執行
         c.join(); // 等c執行緒結束
-        List<String> AB = new ArrayList<>();
-        AB.addAll(Objects.requireNonNull(redisTemplate.opsForList().range("listA", 0, -1)));
-        AB.addAll(Objects.requireNonNull(redisTemplate.opsForList().range("listB", 0, -1)));
-        for (String all_listAB : AB) {
-            redisTemplate.opsForList().rightPush("all_listAB",all_listAB);
+        List<String> all_listAB = new ArrayList<>();
+        all_listAB.addAll(Objects.requireNonNull(redisTemplate.opsForList().range("listA", 0, -1)));
+        all_listAB.addAll(Objects.requireNonNull(redisTemplate.opsForList().range("listB", 0, -1)));
+        if(all_listAB.size() > 0){
+            redisTemplate.opsForList().rightPushAll("all_listAB", all_listAB);
         }
-        return redisTemplate.opsForList().range("all_listAB",0,-1);
+        return redisTemplate.opsForList().range("all_listAB", 0, -1);
     }
 
     @Override

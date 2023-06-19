@@ -10,6 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyRequest {
-    private String a;
-    private String b;
+    private String[] a;
+    private String[] b;
 }

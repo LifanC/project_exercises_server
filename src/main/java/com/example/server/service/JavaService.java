@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 public interface JavaService {
-    List<String> A(MyRequest request);
-    List<String> B(MyRequest request);
+    void A(MyRequest request) throws InterruptedException;
+    List<String> A_show() throws InterruptedException;
+    void B(MyRequest request) throws InterruptedException;
+    List<String> B_show() throws InterruptedException;
     List<String> C() throws InterruptedException;
     void D() throws InterruptedException;
 }

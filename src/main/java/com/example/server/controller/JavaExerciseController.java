@@ -16,14 +16,25 @@ public class JavaExerciseController {
     private JavaService javaService;
 
     @PostMapping("/A")
-    public List<String> A(@RequestBody MyRequest request) {
-        return javaService.A(request);
+    public void A(@RequestBody MyRequest request) throws InterruptedException {
+        javaService.A(request);
+    }
+
+    @GetMapping("/A_show")
+    public List<String> A_show() throws InterruptedException {
+        return javaService.A_show();
     }
 
     @PostMapping("/B")
-    public List<String> B(@RequestBody MyRequest request) {
-        return javaService.B(request);
+    public void B(@RequestBody MyRequest request) throws InterruptedException {
+        javaService.B(request);
     }
+
+    @GetMapping("/B_show")
+    public List<String> B_show() throws InterruptedException {
+        return javaService.B_show();
+    }
+
 
     @GetMapping("/C")
     public List<String> C() throws InterruptedException {
