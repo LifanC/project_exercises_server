@@ -24,8 +24,8 @@
     </select>
 
     <insert id="toeicFromSubmit" parameterType="com.example.server.model.Toeic">
-        insert into project.toeic_words(english,chinese)
-        values (#{english},#{chinese})
+        insert into project.toeic_words(english)
+        values (#{english})
     </insert>
 
     <update id="toeicFromSubmitEx" parameterType="map">
@@ -37,18 +37,10 @@
     <update id="setData" parameterType="map">
         update project.toeic_words toeic
         <set>
-            <if test="english != null and english != ''">
-                toeic.english = #{english},
-            </if>
-            <if test="chinese != null and chinese != ''">
-                toeic.chinese = #{chinese},
-            </if>
-            <if test="example != null and example != ''">
-                toeic.example = #{example},
-            </if>
-            <if test="explain != null and explain != ''">
-                toeic.explain = #{explain}
-            </if>
+            toeic.english = #{english},
+            toeic.chinese = #{chinese},
+            toeic.example = #{example},
+            toeic.explain = #{explain}
         </set>
         where toeic.toeic_id = #{toeicId}
     </update>
@@ -57,6 +49,10 @@
         select *
         from project.toeic_words toeic
         where toeic.english like concat('%', #{english}, '%')
+    </select>
+
+    <select id="all"  resultMap="toeicMap">
+        select * from project.toeic_words
     </select>
 
 </mapper>

@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @Transactional
 @CrossOrigin(origins = "*")
+@RequestMapping("/toeic")
 public class ToeicController {
 
     @Resource
@@ -35,20 +36,24 @@ public class ToeicController {
         return toeicService.toeicFromSubmitEx(example, explain);
     }
 
-    @PutMapping("/setData/{toeicId}/{dialogEnglish}/{dialogChinese}/{dialogExample}/{dialogExplain}")
-    public List<Toeic> setData(
-            @PathVariable String toeicId,
-            @PathVariable String dialogEnglish,
-            @PathVariable String dialogChinese,
-            @PathVariable String dialogExample,
-            @PathVariable String dialogExplain
-    ) {
-        return toeicService.setData(toeicId,dialogEnglish,dialogChinese,dialogExample,dialogExplain);
+    @PutMapping("/setData")
+    public List<Toeic> setData(@RequestBody Toeic toeic) {
+        return toeicService.setData(toeic);
     }
 
     @GetMapping("/queryToeicWords")
     public List<Toeic> queryToeicWords(@Param("english") String english){
         return toeicService.queryToeicWords(english);
+    }
+
+    @GetMapping("/tf")
+    public boolean tf(@Param("english") String english){
+        return toeicService.tf(english);
+    }
+
+    @GetMapping("/all")
+    public List<Toeic> all(){
+        return toeicService.all();
     }
 
 }

@@ -15,21 +15,22 @@ public class ToeicServiceImpl implements ToeicService {
     @Resource
     private ToeicMapper toeicMapper;
 
-    private Integer randomNum;
+    private int randomNum;
 
     @Override
     public List<Toeic> toeicWords() {
         int id = toeicMapper.toeicCount();
-        randomNum = (int) (Math.random() * id) + 1;
-        return toeicMapper.toeicWords(Long.valueOf(randomNum));
+        if (id > 0) {
+            randomNum = (int) (Math.random() * id) + 1;
+            return toeicMapper.toeicWords((long) (randomNum));
+        } else {
+            return null;
+        }
     }
 
     @Override
     public void toeicFromSubmit(Toeic toeic) {
-        int count = toeicMapper.toeicCountData(toeic.getEnglish());
-        if (count == 0) {
-            toeicMapper.toeicFromSubmit(toeic);
-        }
+        toeicMapper.toeicFromSubmit(toeic);
     }
 
     @Override
@@ -39,28 +40,39 @@ public class ToeicServiceImpl implements ToeicService {
         map.put("example", example);
         map.put("explain", explain);
         toeicMapper.toeicFromSubmitEx(map);
-        return toeicMapper.toeicWords(Long.valueOf(randomNum));
+        return toeicMapper.toeicWords((long) (randomNum));
     }
 
     @Override
-    public List<Toeic> setData(String toeicId, String dialogEnglish, String dialogChinese, String dialogExample, String dialogExplain) {
+    public List<Toeic> setData(Toeic toeic) {
         Map<String, Object> map = new HashMap<>();
-        map.put("toeicId", Long.valueOf(toeicId));
-        map.put("english", dialogEnglish);
-        map.put("chinese", dialogChinese);
-        map.put("example", dialogExample);
-        map.put("explain", dialogExplain);
+        map.put("toeicId", toeic.getToeicId());
+        map.put("english", toeic.getEnglish());
+        map.put("chinese", toeic.getChinese());
+        map.put("example", toeic.getExample());
+        map.put("explain", toeic.getExplain());
         toeicMapper.setData(map);
-        return toeicMapper.toeicWords(Long.valueOf(toeicId));
+        return toeicMapper.toeicWords(toeic.getToeicId());
     }
 
     @Override
     public List<Toeic> queryToeicWords(String english) {
         if (english.equals("")) {
-            return toeicMapper.toeicWords(Long.valueOf(randomNum));
+            return toeicMapper.toeicWords((long) (randomNum));
         } else {
             return toeicMapper.queryToeicWords(english);
         }
+    }
+
+    @Override
+    public boolean tf(String english) {
+        int count = toeicMapper.toeicCountData(english);
+        return count != 0;
+    }
+
+    @Override
+    public List<Toeic> all() {
+        return toeicMapper.all();
     }
 
 

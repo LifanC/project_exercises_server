@@ -11,8 +11,10 @@ public interface ToeicService {
 
     List<Toeic> toeicFromSubmitEx(String example, String explain);
 
-    List<Toeic> setData(String toeicId, String dialogEnglish, String dialogChinese, String dialogExample, String dialogExplain);
+    List<Toeic> setData(Toeic toeic);
 
     List<Toeic> queryToeicWords(String english);
+    boolean tf(String english);
+    List<Toeic> all();
 
 }
