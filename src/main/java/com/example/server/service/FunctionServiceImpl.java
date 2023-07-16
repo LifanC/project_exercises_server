@@ -122,7 +122,7 @@ public class FunctionServiceImpl implements FunctionService {
     @Override
     public List<CustomerDataMoney> putAddMoney(String setMoney, String curFieldMoney, String userNameId, String depositOrWithdrawMoney) {
         List<CustomerDataMoney> data = functionMapper.userNameId(userNameId);
-        Map<Object, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         if ("depositMoney".equals(depositOrWithdrawMoney)) {
             data.forEach(z -> {
                 BigDecimal depositNew = new BigDecimal(setMoney);
@@ -166,7 +166,64 @@ public class FunctionServiceImpl implements FunctionService {
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> mapMoney = new HashMap<>();
         switch (ins_del.getInsDel()) {
-            case "1":
+//            case "1" -> {
+//                int count = functionMapper.findAdd(ins_del);
+//                if (count == 0 & !"".equals(ins_del.getEx())) {
+//                    switch (ins_del.getExpense_and_income_number()) {
+//                        case "A" -> {
+//                            ins_del.setExpense(ins_del.getInputMoney());
+//                            ins_del.setIncome(0);
+//                        }
+//                        case "B" -> {
+//                            ins_del.setIncome(ins_del.getInputMoney());
+//                            ins_del.setExpense(0);
+//                        }
+//                    }
+//                    functionMapper.add(ins_del);
+//                    var list = functionMapper.findTotleMoney(ins_del);
+//                    list.forEach(a -> {
+//                        ins_del.setTotleMoney(a.getTotleMoney());
+//                        map.put("calendarDetails", ins_del.getCalendarDetails());
+//                        map.put("totleMoney", a.getTotleMoney());
+//                    });
+//                    functionMapper.setTotle(map);
+//                    if (!"".equals(ins_del.getDetails())) {
+//                        functionMapper.addIns_DelData(ins_del);
+//                    }
+//                } else if (count > 0) {
+//                    int expenseNumber = 0;
+//                    int incomeNumber = 0;
+//                    var setSecond = functionMapper.sel(ins_del);
+//                    switch (ins_del.getExpense_and_income_number()) {
+//                        case "A" -> {
+//                            for (Ins_del V : setSecond) {
+//                                expenseNumber = V.getExpense() + ins_del.getInputMoney();
+//                            }
+//                        }
+//                        case "B" -> {
+//                            for (Ins_del V : setSecond) {
+//                                incomeNumber = V.getIncome() + ins_del.getInputMoney();
+//                            }
+//                        }
+//                    }
+//                    mapMoney.put("calendarDetails", ins_del.getCalendarDetails());
+//                    mapMoney.put("expense", expenseNumber);
+//                    mapMoney.put("income", incomeNumber);
+//                    mapMoney.put("ex", ins_del.getEx());
+//                    functionMapper.setSecond(mapMoney);
+//                    var list = functionMapper.findTotleMoney(ins_del);
+//                    list.forEach(a -> {
+//                        ins_del.setTotleMoney(a.getTotleMoney());
+//                        map.put("calendarDetails", ins_del.getCalendarDetails());
+//                        map.put("totleMoney", a.getTotleMoney());
+//                    });
+//                    functionMapper.setTotle(map);
+//                    if (!"".equals(ins_del.getDetails())) {
+//                        functionMapper.addIns_DelData(ins_del);
+//                    }
+//                }
+//            }
+            case "1" -> {
                 int count = functionMapper.findAdd(ins_del);
                 if (count == 0 & !"".equals(ins_del.getEx())) {
                     switch (ins_del.getExpense_and_income_number()) {
@@ -180,16 +237,7 @@ public class FunctionServiceImpl implements FunctionService {
                         }
                     }
                     functionMapper.add(ins_del);
-                    var list = functionMapper.findTotleMoney(ins_del);
-                    list.forEach(a -> {
-                        ins_del.setTotleMoney(a.getTotleMoney());
-                        map.put("calendarDetails", ins_del.getCalendarDetails());
-                        map.put("totleMoney", a.getTotleMoney());
-                    });
-                    functionMapper.setTotle(map);
-                    if (!"".equals(ins_del.getDetails())) {
-                        functionMapper.addIns_DelData(ins_del);
-                    }
+                    IM_Function(ins_del, map);
                 } else if (count > 0) {
                     int expenseNumber = 0;
                     int incomeNumber = 0;
@@ -211,23 +259,25 @@ public class FunctionServiceImpl implements FunctionService {
                     mapMoney.put("income", incomeNumber);
                     mapMoney.put("ex", ins_del.getEx());
                     functionMapper.setSecond(mapMoney);
-                    var list = functionMapper.findTotleMoney(ins_del);
-                    list.forEach(a -> {
-                        ins_del.setTotleMoney(a.getTotleMoney());
-                        map.put("calendarDetails", ins_del.getCalendarDetails());
-                        map.put("totleMoney", a.getTotleMoney());
-                    });
-                    functionMapper.setTotle(map);
-                    if (!"".equals(ins_del.getDetails())) {
-                        functionMapper.addIns_DelData(ins_del);
-                    }
+                    IM_Function(ins_del, map);
                 }
-                break;
-            case "2":
-                functionMapper.set(ins_del);
-                break;
+            }
+            case "2" -> functionMapper.set(ins_del);
         }
         return functionMapper.sel(ins_del);
+    }
+
+    private void IM_Function(Ins_del ins_del, Map<String, Object> map) {
+        var list = functionMapper.findTotleMoney(ins_del);
+        list.forEach(a -> {
+            ins_del.setTotleMoney(a.getTotleMoney());
+            map.put("calendarDetails", ins_del.getCalendarDetails());
+            map.put("totleMoney", a.getTotleMoney());
+        });
+        functionMapper.setTotle(map);
+        if (!"".equals(ins_del.getDetails())) {
+            functionMapper.addIns_DelData(ins_del);
+        }
     }
 
     @Override
@@ -248,10 +298,7 @@ public class FunctionServiceImpl implements FunctionService {
     @Override
     public Integer total_amount(String DatePickerStart, String DatePickerEnd) {
         List<Ins_del> list = functionMapper.findDatePicker1(DatePickerStart, DatePickerEnd);
-        if (list.size() != 0) {
-            return functionMapper.total_amount(DatePickerStart, DatePickerEnd);
-        }
-        return 0;
+        return (list.size() != 0) ? functionMapper.total_amount(DatePickerStart, DatePickerEnd) : 0;
     }
 
     @Override

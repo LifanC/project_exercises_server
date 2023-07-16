@@ -2,8 +2,6 @@ package com.example.server.service;
 
 import com.example.server.model.MyRequest;
 import jakarta.annotation.Resource;
-import lombok.AllArgsConstructor;
-import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-@AllArgsConstructor
 public class JavaServiceImpl implements JavaService {
 
     @Resource

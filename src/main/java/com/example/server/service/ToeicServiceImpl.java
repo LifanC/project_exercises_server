@@ -19,13 +19,9 @@ public class ToeicServiceImpl implements ToeicService {
 
     @Override
     public List<Toeic> toeicWords() {
-        int id = toeicMapper.toeicCount();
-        if (id > 0) {
-            randomNum = (int) (Math.random() * id) + 1;
-            return toeicMapper.toeicWords((long) (randomNum));
-        } else {
-            return null;
-        }
+        int id_count = toeicMapper.toeicCount();
+        randomNum = (int) (Math.random() * id_count) + 1;
+        return (id_count > 0) ? toeicMapper.toeicWords((long) (randomNum)) : null;
     }
 
     @Override
@@ -57,11 +53,7 @@ public class ToeicServiceImpl implements ToeicService {
 
     @Override
     public List<Toeic> queryToeicWords(String english) {
-        if (english.equals("")) {
-            return toeicMapper.toeicWords((long) (randomNum));
-        } else {
-            return toeicMapper.queryToeicWords(english);
-        }
+        return (english.equals("")) ? toeicMapper.toeicWords((long) (randomNum)) : toeicMapper.queryToeicWords(english);
     }
 
     @Override

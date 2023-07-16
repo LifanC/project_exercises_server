@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Rate extends CreateTime {
+public class Rate {
     private Long rateId;
     private String base;
     private String date;
@@ -16,4 +16,5 @@ public class Rate extends CreateTime {
     private String curFieldMoney;
     private Object curNameJson;
     private String currencyNation;
+    private String createTime;
 }

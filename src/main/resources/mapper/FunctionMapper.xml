@@ -133,7 +133,7 @@
                  inner join project.ins_del_data idd
                             using (expense_and_income_number)
         where calendarDetails between #{DatePickerStart} and #{DatePickerEnd}
-        order by calendarDetails desc,expense_and_income_number desc,inputMoney desc
+        order by calendarDetails desc, expense_and_income_number desc, inputMoney desc
     </select>
     <select id="findDatePicker1" resultType="com.example.server.model.Ins_del">
         select *

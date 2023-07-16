@@ -8,7 +8,6 @@ import java.util.*;
 
 @Mapper
 public interface RateExMapper {
-
     int truncateTable();
     int insertRate(Rate rate);
     List<CurrencyJson> selectCurrency(String currency);

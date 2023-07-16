@@ -11,41 +11,23 @@ import java.util.Map;
 @Mapper
 public interface FunctionMapper {
     int countUserName(CustomerData customerData);
-
     List<CustomerData> userName(CustomerData customerData);
-
     int register(CustomerData customerData);
-
     int registerMoney(CustomerDataMoney customerDataMoney);
-
     List<CustomerData> login(CustomerData customerData);
-
     void edit(String userNameId, String passWord, String formatteryyyyMMdd);
-
     List<CustomerDataMoney> userId(String userNameId);
-
     void save_cur(String userNameId, String cField, String cFieldMoney);
-
     List<CustomerDataMoney> userNameId(String userNameId);
-
     int setNameId(Map map);
-
     int add(Ins_del ins_del);
-
     int findAdd(Ins_del ins_del);
-
     List<Ins_del> findTotleMoney(Ins_del ins_del);
-
     int set(Ins_del ins_del);
-
     List<Ins_del> sel(Ins_del ins_del);
-
     void setTotle(Map map);
-
     void setSecond(Map mapMoney);
-
     void addIns_DelData(Ins_del ins_del);
-
     List<Ins_del> findDatePicker(String DatePickerStart, String DatePickerEnd);
     List<Ins_del> findDatePicker1(String DatePickerStart, String DatePickerEnd);
     int total_amount(String DatePickerStart, String DatePickerEnd);

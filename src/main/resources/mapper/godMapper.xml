@@ -17,22 +17,24 @@
         select * from project.all_god god
         <where>
             <if test="name != null and name != ''">god.name = #{name}</if>
-            <if test="chatper != null and chatper != ''"> and god.chatper = #{chatper}</if>
+            <if test="chatper != null and chatper != ''">and god.chatper = #{chatper}</if>
         </where>
     </select>
     <select id="getTenGodData" resultMap="GodMap">
         select * from project.all_god god
         <where>
             god.name = #{name}
-            <if test="chatper != null and chatper != ''"> and god.chatper = #{chatper}</if>
+            <if test="chatper != null and chatper != ''">and god.chatper = #{chatper}</if>
         </where>
         limit 30 offset #{skip};
     </select>
     <select id="getAllCount" resultType="java.lang.Integer">
-        select count(0) from project.all_god
+        select count(0)
+        from project.all_god
     </select>
     <select id="getId" resultMap="GodMap">
-        select * from project.all_god god
+        select *
+        from project.all_god god
         where god.god_id = #{godId}
     </select>
 </mapper>

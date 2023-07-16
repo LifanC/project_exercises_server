@@ -12,8 +12,8 @@ public interface ToeicMapper {
     int toeicCountData(String english);
     List<Toeic> toeicWords(Long toeicId);
     int toeicFromSubmit(Toeic toeic);
-    int toeicFromSubmitEx(Map map);
-    int setData(Map map);
+    int toeicFromSubmitEx(Map<String, Object> map);
+    int setData(Map<String, Object> map);
     List<Toeic> queryToeicWords (String english);
     List<Toeic> all ();
 

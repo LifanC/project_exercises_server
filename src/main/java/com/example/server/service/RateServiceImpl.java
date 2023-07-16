@@ -39,12 +39,12 @@ public class RateServiceImpl implements RateService {
         map.forEach((k, v) -> {
             rate.setCurLocal(rate.getBase());
             rate.setCurLocalMoney("1");
-            rate.setCurField((String) k);
+            rate.setCurField(k.toString());
             rate.setCurFieldMoney(v.toString());
             rate.setCreateTime(timeFormatter());
-            List<CurrencyJson> dataJson = rateExMapper.selectCurrency((String) k);
+            List<CurrencyJson> dataJson = rateExMapper.selectCurrency(k.toString());
             dataJson.forEach(e -> {
-                if (e.getCurrency().equals((String) k)) {
+                if (e.getCurrency().equals(k.toString())) {
                     rate.setCurNameJson(e.getCurrencyName());
                 }
             });

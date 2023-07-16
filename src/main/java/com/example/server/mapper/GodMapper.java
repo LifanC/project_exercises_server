@@ -10,7 +10,7 @@ import java.util.Map;
 public interface GodMapper {
     List<God> allGod();
     List<God> getGodChetperAndSection(Map<String,String> map);
-    List<God> getTenGodData(Map map);
+    List<God> getTenGodData(Map<String, Object> map);
     int getAllCount();
     List<God> getId(Long godId);
 }

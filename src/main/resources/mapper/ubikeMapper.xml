@@ -70,10 +70,10 @@
         select *
         from project.u_bike bike
         where bike.sarea = #{sarea}
-          <if test="ar != null and ar != ''">
-              and bike.ar = #{ar}
-          </if>
-          and bike.srcUpdateTime like concat('%', #{srcUpdateTime}, '%')
+        <if test="ar != null and ar != ''">
+            and bike.ar = #{ar}
+        </if>
+        and bike.srcUpdateTime like concat('%', #{srcUpdateTime}, '%')
         order by bike.sno asc
     </select>
 
@@ -84,7 +84,6 @@
           and bike.srcUpdateTime like concat('%', #{srcUpdateTime}, '%')
         order by bike.sno asc
     </select>
-
 
 
 </mapper>

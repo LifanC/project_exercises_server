@@ -17,12 +17,12 @@ public class UbikeServiceImpl implements UbikeService {
     @Resource
     private UbikeMapper ubikeMapper;
 
-    public String dateFormat(String TorY){
+    public String dateFormat(String TorY) {
         Date date = new Date();
         SimpleDateFormat strDate = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.DATE,-1);
+        calendar.add(Calendar.DATE, -1);
 //        1.
 //        switch (TorY){
 //            case "Today":
@@ -48,22 +48,14 @@ public class UbikeServiceImpl implements UbikeService {
     }
 
     @Override
-    public List<Ubike> getOnlyList(String sarea,String ar) {
-        List<Ubike> dataA = ubikeMapper.selectUbike(sarea,ar,dateFormat("Today"));
-        if(dataA.size() == 0){
-            return ubikeMapper.selectUbike(sarea,ar,dateFormat("Yesterday"));
-        }else{
-            return ubikeMapper.selectUbike(sarea,ar,dateFormat("Today"));
-        }
+    public List<Ubike> getOnlyList(String sarea, String ar) {
+        List<Ubike> dataA = ubikeMapper.selectUbike(sarea, ar, dateFormat("Today"));
+        return (dataA.size() == 0) ? ubikeMapper.selectUbike(sarea, ar, dateFormat("Yesterday")) : ubikeMapper.selectUbike(sarea, ar, dateFormat("Today"));
     }
 
     @Override
     public List<Ubike> getOnlyLists(String sarea) {
-        List<Ubike> dataA = ubikeMapper.selectUbikes(sarea,dateFormat("Today"));
-        if(dataA.size() == 0){
-            return ubikeMapper.selectUbikes(sarea,dateFormat("Yesterday"));
-        }else{
-            return ubikeMapper.selectUbikes(sarea,dateFormat("Today"));
-        }
+        List<Ubike> dataA = ubikeMapper.selectUbikes(sarea, dateFormat("Today"));
+        return (dataA.size() == 0) ? ubikeMapper.selectUbikes(sarea, dateFormat("Yesterday")) : ubikeMapper.selectUbikes(sarea, dateFormat("Today"));
     }
 }

@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Ubike extends CreateTime {
+public class Ubike {
     private Long uBikeId;
     private Integer sno;
     private String sna;
@@ -25,5 +25,5 @@ public class Ubike extends CreateTime {
     private String updateTime;
     private String infoTime;
     private String infoDate;
-
+    private String createTime;
 }
