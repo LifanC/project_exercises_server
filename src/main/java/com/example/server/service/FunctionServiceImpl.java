@@ -225,7 +225,7 @@ public class FunctionServiceImpl implements FunctionService {
 //            }
             case "1" -> {
                 int count = functionMapper.findAdd(ins_del);
-                if (count == 0 & !"".equals(ins_del.getEx())) {
+                if (count == 0) {
                     switch (ins_del.getExpense_and_income_number()) {
                         case "A" -> {
                             ins_del.setExpense(ins_del.getInputMoney());
